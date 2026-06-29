@@ -1,0 +1,5 @@
+# ImageOptimizer 1.0.0-beta1
+
+## 2026-06-28 — 1.0.0-beta1
+
+- First public beta: WebP/AVIF conversion on upload, responsive srcset, CLI/cron bulk, picture injection, Vue admin.

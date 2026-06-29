@@ -1,0 +1,13 @@
+* text=auto eol=lf
+
+_build/ export-ignore
+tests/ export-ignore
+node_modules/ export-ignore
+.gitlab-ci.yml export-ignore
+composer.json export-ignore
+composer.lock export-ignore
+phpstan.neon export-ignore
+phpunit.xml export-ignore
+vite.mgr.config.js export-ignore
+package.json export-ignore
+package-lock.json export-ignore

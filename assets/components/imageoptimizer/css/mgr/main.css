@@ -1,0 +1,362 @@
+/**
+ * ImageOptimizer CMP — стили под MODX 3 manager (палитра и отступы как у msReviews/mSearch).
+ * Изоляция: #imageoptimizer-mgr-app, токены --io-*.
+ */
+
+#imageoptimizer-mgr-app {
+  --io-tab-accent: #2db5a4;
+  --io-tab-accent-hover: #259e8f;
+  --io-primary: #27ae60;
+  --io-primary-hover: #229954;
+  --io-primary-active: #1e8449;
+  --io-primary-subtle: rgba(39, 174, 96, 0.08);
+  --io-text: #2c3e50;
+  --io-text-muted: #6b7280;
+  --io-surface: #f4f6f8;
+  --io-surface-hover: #e8ecef;
+  --io-surface-card: #ffffff;
+  --io-surface-ground: #eef3f7;
+  --io-border: #e4e7eb;
+  --io-border-strong: #d1d5db;
+  --io-negative: #e74c3c;
+  --io-radius-sm: 0.25rem;
+  --io-radius-md: 0.375rem;
+  --io-radius-lg: 0.625rem;
+  --io-radius-xl: 0.75rem;
+  --io-spacing-xs: 0.25rem;
+  --io-spacing-sm: 0.5rem;
+  --io-spacing-md: 1rem;
+  --io-spacing-lg: 1.5rem;
+  --io-spacing-xl: 2rem;
+  --io-font-size-sm: 0.875rem;
+  --io-font-size-base: 1rem;
+  --io-font-size-lg: 1.125rem;
+  --io-transition: 0.2s ease;
+  --io-filter-control-height: 2rem;
+  --p-primary-color: var(--io-primary);
+  --p-primary-hover-color: var(--io-primary-hover);
+  --p-primary-active-color: var(--io-primary-active);
+  --p-border-radius: var(--io-radius-md);
+
+  font-size: var(--io-font-size-base);
+  color: var(--io-text);
+  line-height: 1.5;
+  min-height: 100%;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  max-height: calc(100vh - 2.5rem);
+  max-height: calc(100dvh - 2.5rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+
+#imageoptimizer-mgr-root {
+  min-height: 0;
+}
+
+/* MODX manager: глобальный content-box ломает width:100% + padding */
+#imageoptimizer-mgr-app,
+#imageoptimizer-mgr-app * {
+  box-sizing: border-box;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: var(--io-spacing-md);
+  max-width: 90rem;
+  margin: 0 auto;
+  min-width: 0;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin__panel {
+  background: var(--io-surface-card);
+  border: 0.0625rem solid var(--io-border);
+  border-radius: var(--io-radius-xl);
+  padding: var(--io-spacing-xl);
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ========== Tabs ========== */
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-tablist {
+  padding: 0;
+  gap: 0;
+  flex-wrap: wrap;
+  border-bottom: 0.0625rem solid var(--io-border);
+  margin-bottom: var(--io-spacing-lg);
+  background: transparent;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-tablist .p-tab {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 0.125rem solid transparent !important;
+  border-radius: 0 !important;
+  margin: 0 0 -0.0625rem 0 !important;
+  padding: 0.75rem 1.125rem !important;
+  color: var(--io-text-muted) !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+  transition: color var(--io-transition), border-color var(--io-transition);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-tablist .p-tab:hover {
+  color: var(--io-text) !important;
+  background: transparent !important;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-tablist .p-tab[aria-selected='true'],
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-tablist .p-tab.p-tab-active {
+  color: var(--io-tab-accent) !important;
+  border-bottom-color: var(--io-tab-accent) !important;
+  font-weight: 600 !important;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-tablist .p-tablist-active-bar {
+  display: none !important;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-tabpanels,
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-tabpanel {
+  padding: 0 !important;
+  background: transparent;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ========== Buttons & inputs ========== */
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-button {
+  box-shadow: none !important;
+  font-weight: 500;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-button:not(.p-button-lg):not(.p-button-icon-only) {
+  min-height: var(--io-filter-control-height);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-inputtext,
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-inputnumber-input,
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-select .p-select-label,
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-textarea {
+  border-color: var(--io-border-strong);
+  border-radius: var(--io-radius-md);
+  font-size: var(--io-font-size-sm);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-inputtext:enabled:focus,
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-inputnumber-input:enabled:focus,
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-select:not(.p-disabled).p-focus,
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-textarea:enabled:focus {
+  border-color: var(--io-primary);
+  box-shadow: 0 0 0 0.125rem rgba(39, 174, 96, 0.2);
+}
+
+/* ========== Cards & stat blocks ========== */
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-card {
+  border-radius: var(--io-radius-lg);
+  border: 0.0625rem solid var(--io-border);
+  box-shadow: none;
+  background: var(--io-surface-card);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-card .p-card-body,
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-card .p-card-content {
+  padding: var(--io-spacing-md);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-stat-card .p-card-content {
+  padding: 1.25rem;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-compat-card .p-card-body,
+#imageoptimizer-mgr-app .imageoptimizer-compat-card .p-card-content {
+  padding: var(--io-spacing-md);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-compat-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--io-spacing-sm);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-compat-card__body .p-tag {
+  margin: 0;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-compat-card__title {
+  font-size: var(--io-font-size-base);
+  font-weight: 700;
+  color: var(--io-text);
+  line-height: 1.3;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-compat-card__hint {
+  margin: 0;
+  font-size: var(--io-font-size-sm);
+  color: var(--io-text-muted);
+  line-height: 1.45;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-stat-card__value {
+  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1;
+  color: #18b989;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-stat-card__icon {
+  font-size: 1.5rem;
+  color: var(--io-tab-accent);
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-tab-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--io-spacing-md);
+  min-width: 0;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-page-section__title {
+  font-size: var(--io-font-size-lg);
+  font-weight: 600;
+  color: var(--io-text);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-filter-toolbar.p-toolbar {
+  padding: var(--io-spacing-sm) var(--io-spacing-md);
+  border: 0.0625rem solid var(--io-border);
+  border-radius: var(--io-radius-md);
+  background: var(--io-surface-ground);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-empty-state {
+  padding: var(--io-spacing-xl) var(--io-spacing-md);
+  color: var(--io-text-muted);
+  border: 0.0625rem dashed var(--io-border);
+  border-radius: var(--io-radius-md);
+  background: var(--io-surface-ground);
+}
+
+/* ========== DataTable ========== */
+#imageoptimizer-mgr-app .imageoptimizer-datatable-shell {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-datatable {
+  border: 0.0625rem solid var(--io-border);
+  border-radius: var(--io-radius-md);
+  background: var(--io-surface-card);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-datatable .p-datatable-thead > tr > th {
+  background: var(--io-surface);
+  color: var(--io-text-muted);
+  font-weight: 600;
+  font-size: var(--io-font-size-sm);
+  padding: var(--io-spacing-sm) var(--io-spacing-md);
+  border-color: var(--io-border);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-datatable .p-datatable-tbody > tr > td {
+  padding: var(--io-spacing-sm) var(--io-spacing-md);
+  border-color: var(--io-border);
+  font-size: var(--io-font-size-sm);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-datatable .p-datatable-tbody > tr:hover {
+  background: var(--io-surface-hover) !important;
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-progressbar {
+  border-radius: var(--io-radius-sm);
+  background: var(--io-surface);
+}
+
+#imageoptimizer-mgr-app .imageoptimizer-admin .p-progressbar-value {
+  background: var(--io-tab-accent);
+}
+
+/* ========== Dialogs (portal → body) ========== */
+body .p-dialog.imageoptimizer-dialog,
+body .p-dialog.imageoptimizer-dialog-root {
+  width: min(28rem, 96vw) !important;
+  max-width: 96vw !important;
+  box-sizing: border-box !important;
+  border-radius: var(--io-radius-md, 0.375rem);
+  border: 0.0625rem solid var(--io-border, #e4e7eb);
+}
+
+body .p-dialog.imageoptimizer-dialog .p-dialog-header,
+body .p-dialog.imageoptimizer-dialog-root .p-dialog-header {
+  background: var(--io-surface-ground, #eef3f7);
+  border-bottom: 0.0625rem solid var(--io-border, #e4e7eb);
+  padding: var(--io-spacing-md, 1rem);
+}
+
+body .p-dialog.imageoptimizer-dialog .p-dialog-content,
+body .p-dialog.imageoptimizer-dialog-root .p-dialog-content {
+  padding: var(--io-spacing-lg, 1.5rem) !important;
+  box-sizing: border-box !important;
+}
+
+body .p-dialog.imageoptimizer-dialog .p-dialog-footer,
+body .p-dialog.imageoptimizer-dialog-root .p-dialog-footer {
+  padding: var(--io-spacing-md, 1rem);
+  border-top: 0.0625rem solid var(--io-border, #e4e7eb);
+  gap: 0.5rem;
+}
+
+.imageoptimizer-form-dialog.imageoptimizer-dialog-root {
+  max-height: 90vh;
+}
+
+.imageoptimizer-dialog-footer {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* ========== Responsive padding ========== */
+@media (min-width: 48rem) {
+  #imageoptimizer-mgr-app .imageoptimizer-admin {
+    padding: var(--io-spacing-md) 1.5rem;
+  }
+}
+
+@media (min-width: 62rem) {
+  #imageoptimizer-mgr-app .imageoptimizer-admin {
+    padding: var(--io-spacing-md) 2rem;
+  }
+}
+
+/* ========== Dark mode ========== */
+.modx-dark-mode #imageoptimizer-mgr-app {
+  --io-text: #e5e7eb;
+  --io-text-muted: #9ca3af;
+  --io-surface: #1f2937;
+  --io-surface-hover: #374151;
+  --io-surface-card: #111827;
+  --io-surface-ground: #0f172a;
+  --io-border: #374151;
+  --io-border-strong: #4b5563;
+  --io-primary-subtle: rgba(39, 174, 96, 0.14);
+}
+
+.modx-dark-mode #imageoptimizer-mgr-app .imageoptimizer-admin__panel,
+.modx-dark-mode #imageoptimizer-mgr-app .imageoptimizer-admin .p-card {
+  background: var(--io-surface-card);
+  border-color: var(--io-border);
+}

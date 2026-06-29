@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="imageoptimizer" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" version="1.1">
+    <object class="ioQueue" table="imageoptimizer_queue" extends="xPDOSimpleObject">
+        <field key="source" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="path" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="format" dbtype="varchar" precision="10" phptype="string" null="false" default="webp" />
+        <field key="width" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="status" dbtype="varchar" precision="20" phptype="string" null="false" default="pending" />
+        <field key="skip_reason" dbtype="varchar" precision="64" phptype="string" null="true" />
+        <field key="original_size" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" />
+        <field key="converted_size" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" />
+        <field key="error" dbtype="text" phptype="string" null="true" />
+        <field key="created_at" dbtype="datetime" phptype="datetime" null="true" />
+        <field key="processed_at" dbtype="datetime" phptype="datetime" null="true" />
+        <field key="locked_at" dbtype="datetime" phptype="datetime" null="true" />
+        <index alias="uniq_variant" name="uniq_variant" primary="false" unique="true" type="BTREE">
+            <column key="source" length="" collation="A" null="false" />
+            <column key="path" length="" collation="A" null="false" />
+            <column key="format" length="" collation="A" null="false" />
+            <column key="width" length="" collation="A" null="false" />
+        </index>
+        <index alias="status" name="status" primary="false" unique="false" type="BTREE">
+            <column key="status" length="" collation="A" null="false" />
+        </index>
+        <index alias="source" name="source" primary="false" unique="false" type="BTREE">
+            <column key="source" length="" collation="A" null="false" />
+        </index>
+        <index alias="path" name="path" primary="false" unique="false" type="BTREE">
+            <column key="path" length="" collation="A" null="false" />
+        </index>
+        <index alias="locked_at" name="locked_at" primary="false" unique="false" type="BTREE">
+            <column key="locked_at" length="" collation="A" null="true" />
+        </index>
+    </object>
+</model>

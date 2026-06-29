@@ -1,0 +1,25 @@
+{
+  "name": "extras/imageoptimizer",
+  "description": "ImageOptimizer extra for MODX Revolution 3",
+  "type": "project",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=8.2"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.0",
+    "phpunit/phpunit": "^11.0",
+    "squizlabs/php_codesniffer": "^3.10"
+  },
+  "autoload": {
+    "files": []
+  },
+  "scripts": {
+    "test": "phpunit",
+    "phpstan": "phpstan analyse --memory-limit=512M",
+    "check": [
+      "@test",
+      "@phpstan"
+    ]
+  },
+}

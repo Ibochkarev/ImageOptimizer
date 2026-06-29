@@ -1,0 +1,10 @@
+parameters:
+  level: 5
+  paths:
+    - core/components/imageoptimizer/include
+  phpVersion: 80200
+  treatPhpDocTypesAsCertain: false
+  bootstrapFiles:
+    - tests/phpstan-bootstrap.php
+  scanFiles:
+    - tests/phpstan-stubs.php

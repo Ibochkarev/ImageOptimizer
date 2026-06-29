@@ -1,0 +1,56 @@
+stages:
+  - lint
+  - analyse
+  - test
+  - build
+
+variables:
+  COMPOSER_ALLOW_SUPERUSER: "1"
+
+lint:php:
+  stage: lint
+  image: php:8.2-cli
+  script:
+    - find core/components/imageoptimizer -name '*.php' -print0 | xargs -0 -n1 php -l
+    - find _build -name '*.php' -print0 | xargs -0 -n1 php -l
+
+analyse:phpstan:
+  stage: analyse
+  image: php:8.2-cli
+  before_script:
+    - apt-get update && apt-get install -y git unzip
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - composer install --no-interaction
+  script:
+    - vendor/bin/phpstan analyse core/components/imageoptimizer/include -c phpstan.neon --memory-limit=512M
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+test:phpunit:
+  stage: test
+  image: php:8.2-cli
+  before_script:
+    - apt-get update && apt-get install -y git unzip
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - composer install --no-interaction
+  script:
+    - vendor/bin/phpunit --configuration phpunit.xml
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+build:package:
+  stage: build
+  image: php:8.2-cli
+  before_script:
+    - apt-get update && apt-get install -y git unzip nodejs npm
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - npm ci
+    - npm run build
+  script:
+    - php _build/build.php
+    - test -f core/packages/imageoptimizer-1.0.0-beta1.transport.zip || test -n "$(ls core/packages/imageoptimizer-*.transport.zip 2>/dev/null)"
+  artifacts:
+    paths:
+      - core/packages/imageoptimizer-*.transport.zip
+  rules:
+    - if: $CI_COMMIT_BRANCH
