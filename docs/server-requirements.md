@@ -26,7 +26,7 @@
 
 - GD с поддержкой WebP (`imagewebp`)
 - Imagick с WebP
-- CLI **cwebp** (libwebp) — часто быстрее; приоритет задаётся `method_priority`
+- CLI **cwebp** (libwebp) — часто быстрее. Приоритет задаётся `method_priority`
 
 ### AVIF
 
@@ -41,7 +41,7 @@
 
 | Параметр | Рекомендация | Комментарий |
 |----------|--------------|-------------|
-| `memory_limit` | ≥ 256M; для больших фото 512M | Дублируется в `max_memory_limit` на время convert |
+| `memory_limit` | ≥ 256M, для больших фото 512M | Дублируется в `max_memory_limit` на время convert |
 | `max_execution_time` | ≥ 60 для CLI/cron | Cron укладывается в `time-budget` |
 | `upload_max_filesize` | по политике сайта | File Manager upload |
 
@@ -94,7 +94,7 @@ php core/components/imageoptimizer/cli/convert.php --limit=1 --json
 | Симптом | Действие |
 |---------|----------|
 | Server: «Не найден» при рабочем `php -m \| grep imagick` | Установите imagick для **той же** версии PHP, что FPM (`pecl install imagick`) |
-| cwebp/avifenc не находятся | `brew install webp libavif libheif imagemagick`; добавьте `env[PATH]` в pool FPM |
+| cwebp/avifenc не находятся | `brew install webp libavif libheif imagemagick`. Добавьте `env[PATH]` в pool FPM |
 | Старый php-fpm после `brew services restart` | Убейте залипший master-процесс, перезапустите Valet/Herd |
 
 Preflight дополнительно проверяет `/opt/homebrew/bin` и `/usr/local/bin`, если `PATH` в FPM пустой.

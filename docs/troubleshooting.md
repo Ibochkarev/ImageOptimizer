@@ -10,7 +10,7 @@
 
 ### Шаги
 
-1. **Админка** — **Очередь → Обработать очередь** (нужно `imageoptimizer_run`). Обрабатывает до `cron_limit` за клик; для большой очереди — несколько раз или cron.
+1. **Админка** — **Очередь → Обработать очередь** (нужно `imageoptimizer_run`). Обрабатывает до `cron_limit` за клик. Для большой очереди — несколько раз или cron.
 2. **Cron** — строка в crontab указывает на правильный PHP и путь:
    ```bash
    php core/components/imageoptimizer/cron/convert.php
@@ -24,7 +24,7 @@
 5. **Зависшие processing** — **Очередь → Сбросить зависшие** или дождитесь cron (`stuck_minutes`).
 6. **Энкодеры** — вкладка **Server**: WebP должен быть «Доступен».
 7. **enabled** — `imageoptimizer_enabled=1`.
-8. **409 worker_busy** — другой cron или «Обработать» уже работает; подождите или снимите lock.
+8. **409 worker_busy** — другой cron или «Обработать» уже работает. Подождите или снимите lock.
 
 ### Ошибка «Unable to create cache directory»
 
@@ -44,7 +44,7 @@ chmod 775 core/cache/imageoptimizer
 3. В очереди для этого пути статус **done** (не только pending)
 4. `src` у `<img>` — локальный путь в media source (`assets/...`), не внешний URL
 5. Нет skip: класс из `skip_classes`, `skip_src_pattern`, `data-imageoptimizer-skip`
-6. **Кэш:** очистите кэш MODX; при `html_cache=1` — сброс HTML-кэша ImageOptimizer (см. [frontend-guide.md](frontend-guide.md))
+6. **Кэш:** очистите кэш MODX. При `html_cache=1` — сброс HTML-кэша ImageOptimizer (см. [frontend-guide.md](frontend-guide.md))
 7. Страница не больше `max_html_size` (1 МБ по умолчанию)
 
 ### Проверка HTML
@@ -63,7 +63,7 @@ curl -s 'https://example.com/page.html' | grep -E '<picture|\.webp'
 
 | Причина | Действие |
 |---------|----------|
-| Upscale skip | `upscale=0` и картинка меньше breakpoint — норма; включите `upscale=1` если нужны «широкие» варианты |
+| Upscale skip | `upscale=0` и картинка меньше breakpoint — норма. Включите `upscale=1` если нужны «широкие» варианты |
 | SvgSkip | SVG не конвертируется |
 | AlreadyWebp | Источник уже WebP |
 | AnimatedNotSupported | GIF с анимацией |

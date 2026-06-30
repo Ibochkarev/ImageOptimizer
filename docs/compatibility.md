@@ -11,9 +11,9 @@ ImageOptimizer рассчитан на типичный стек MODX 3: Filesys
 | **VueTools 1.1.2+** | Обязателен для админки | Без него — сообщение `vuetools_required` |
 | **MiniShop3** | Инъекция на витрине | Чанки товаров не обязаны содержать `<picture>` |
 | **Thumb3x** | Skip по URL | `skip_src_pattern=thumb3x` (default) |
-| **pThumb / phpThumbOf** | Параллельно | Не конфликтует; разные URL и файлы на диске |
-| **Gallery / MIGX** | Зависит от разметки | Локальные `assets/` img — inject; внешние URL — skip |
-| **Static HTML cache (MODX)** | Совместимо | Очищайте кэш после bulk convert; учитывайте `html_cache` ImageOptimizer |
+| **pThumb / phpThumbOf** | Параллельно | Не конфликтует. Разные URL и файлы на диске |
+| **Gallery / MIGX** | Зависит от разметки | Локальные `assets/` img — inject. Внешние URL — skip |
+| **Static HTML cache (MODX)** | Совместимо | Очищайте кэш после bulk convert. Учитывайте `html_cache` ImageOptimizer |
 
 ## Thumb3x
 

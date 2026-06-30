@@ -9,7 +9,7 @@
 | [pdoTools](https://modx.pro/components/pdotools) | актуальная | Зависимость transport (resolver) |
 | [VueTools](https://docs.modx.pro/components/vuetools/) | ≥ 1.1.2-pl | Админка (Vue 3 + PrimeVue) |
 | GD **или** Imagick | с WebP | Минимум для конвертации |
-| MiniShop3 | опционально | Витрина; инъекция работает на любом HTML-сайте |
+| MiniShop3 | опционально | Витрина. Инъекция работает на любом HTML-сайте |
 
 Расширения PHP: `fileinfo`, `gd` или `imagick`. Для AVIF — `avifenc` или Imagick с AVIF (см. [server-requirements.md](server-requirements.md)).
 
@@ -91,7 +91,7 @@ npm run dev:mgr
 php core/components/imageoptimizer/cli/convert.php --source=1 --scan --path=assets/images --limit=500
 ```
 
-5. Нажмите **Обработать очередь** или дождитесь cron; очистите кэш MODX после первой массовой конвертации.
+5. Нажмите **Обработать очередь** или дождитесь cron. Очистите кэш MODX после первой массовой конвертации.
 
 Подробнее о настройках: [configuration.md](configuration.md).
 

@@ -71,6 +71,8 @@ php _build/build.php
 Регистрация: `imageoptimizer_action_handlers()` в `handlers.php`.  
 Обработка очереди из UI: `imageoptimizer_handle_queue_process()` в `handlers_queue.php` (lock `cron`, `imageoptimizer_process_queue()`).
 
+Подробные параметры POST, JSON-ответы и PHP-функции — [api.md](api.md).
+
 ## Модель ioQueue
 
 Таблица: `imageoptimizer_queue`
@@ -158,6 +160,7 @@ vendor/bin/phpunit
 
 ## Связанные документы
 
+- [api.md](api.md)
 - [../prd.md](../prd.md)
 - [cli.md](cli.md)
 - [permissions.md](permissions.md)

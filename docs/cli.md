@@ -112,10 +112,10 @@ echo $?
 | Пересобрать очередь (каталог) | `--scan --path=…` или `--path=…` |
 | Пересобрать (один файл) | `--path=assets/…/file.jpg --limit=10` |
 | **Обработать очередь** | `--limit=N` (без `--scan`) |
-| Retry failed | нет прямого CLI; Queue → Retry или connector |
-| Reset stuck | автоматически в cron; в UI — **Сбросить зависшие** |
+| Retry failed | нет прямого CLI. Queue → Retry или connector |
+| Reset stuck | автоматически в cron, в UI — **Сбросить зависшие** |
 
-Connector: `queue/process`, `queue/rebuild`, `queue/retry`, `queue/reset_stuck` — [developer-guide.md](developer-guide.md).
+Connector: `queue/process`, `queue/rebuild`, `queue/retry`, `queue/reset_stuck` — [api.md](api.md), обзор в [developer-guide.md](developer-guide.md).
 
 `queue/process` и cron используют один lock — параллельный запуск вернёт `worker_busy`.
 

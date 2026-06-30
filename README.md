@@ -6,7 +6,7 @@
 
 - MODX 3.0+, PHP 8.2+
 - [pdoTools](https://modx.pro/components/pdotools), [VueTools](https://docs.modx.pro/components/vuetools/) ≥ 1.1.2-pl
-- GD или Imagick с WebP; AVIF опционально
+- GD или Imagick с WebP. AVIF — опционально
 
 ## Сборка
 

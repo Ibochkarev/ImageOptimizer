@@ -1,5 +1,28 @@
-# ImageOptimizer 1.0.0-beta1
+# Changelog
 
-## 2026-06-28 — 1.0.0-beta1
+All notable changes to this project will be documented in this file.
 
-- First public beta: WebP/AVIF conversion on upload, responsive srcset, CLI/cron bulk, picture injection, Vue admin.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.0-beta1] - 2026-06-28
+
+### Added
+- Конвертация JPEG/PNG/GIF/WebP в WebP и опционально AVIF (GD, Imagick, cwebp, avifenc)
+- Responsive-варианты по breakpoints (по умолчанию 480–1920 px), файлы рядом с оригиналом
+- Очередь `imageoptimizer_queue`: pending, processing, done, failed, skipped
+- Плагин: `OnFileManagerUpload` (enqueue + sync convert), `OnWebPagePrerender` (inject `<picture>`)
+- Vue-админка: Обзор, Очередь, Настройки, Сервер, Совместимость (VueTools ≥ 1.1.2-pl)
+- Connector API: queue/list, retry, rebuild, clear, reset_stuck, process, stats, settings, server/check
+- Кнопка «Обработать очередь» в админке (worker cron/CLI, lock `cron.lock`)
+- Rebuild по одному файлу или каталогу (`imageoptimizer_rebuild_path`)
+- CLI `cli/convert.php`, cron `cron/convert.php`, `cron/prune.php`
+- Пропуски inject: skip_classes, skip_src_pattern (Thumb3x), data-imageoptimizer-skip, SVG, внешние URL
+- HTML-кэш инъекции, права ACL (view, settings, run)
+- Документация: readme.txt, changelog.txt. Полный индекс и API — docs.modx.pro
+
+### Requirements
+- MODX Revolution 3.0+
+- PHP 8.2+
+- pdoTools, VueTools ≥ 1.1.2-pl
+- GD или Imagick с WebP (AVIF опционально)

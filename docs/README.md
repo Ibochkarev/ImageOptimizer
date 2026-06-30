@@ -29,6 +29,7 @@
 | Документ | Описание |
 |----------|----------|
 | [developer-guide.md](developer-guide.md) | Архитектура, connector API, события, модель `ioQueue` |
+| [api.md](api.md) | Connector: параметры, JSON-ответы, PHP-функции |
 | [testing.md](testing.md) | PHPUnit, демо-шаблон, seed-скрипт, smoke-чеклист |
 | [../prd.md](../prd.md) | PRD и статус реализации |
 
@@ -66,8 +67,9 @@ URL демо после seed: `/imageoptimizer-test.html` (или alias ресу
 
 ### Backend / maintainer
 
-1. [developer-guide.md](developer-guide.md) — API и события
-2. [cli.md](cli.md) — bulk и cron
-3. [testing.md](testing.md) — PHPUnit
+1. [developer-guide.md](developer-guide.md) — архитектура и события
+2. [api.md](api.md) — connector и PHP API
+3. [cli.md](cli.md) — bulk и cron
+4. [testing.md](testing.md) — PHPUnit
 
 **Дата документации:** 28.06.2026

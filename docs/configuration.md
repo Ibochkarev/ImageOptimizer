@@ -31,8 +31,8 @@
 
 | Ключ | Тип | По умолчанию | Описание |
 |------|-----|--------------|----------|
-| `imageoptimizer_breakpoints` | text | `480,768,1024,1440,1920` | Ширины вариантов (px), CSV; пусто = только full-size |
-| `imageoptimizer_variant_pattern` | text | `{basename}.{width}.{ext}` | Имена файлов; width=0 → `image.jpg.webp` |
+| `imageoptimizer_breakpoints` | text | `480,768,1024,1440,1920` | Ширины вариантов (px), CSV. Пусто = только full-size |
+| `imageoptimizer_variant_pattern` | text | `{basename}.{width}.{ext}` | Имена файлов. width=0 → `image.jpg.webp` |
 | `imageoptimizer_upscale` | boolean | `0` | Разрешить варианты шире оригинала (иначе skip upscale) |
 | `imageoptimizer_responsive_min_width` | number | `320` | Брейкпоинты уже этой ширины не генерируются |
 
@@ -90,7 +90,7 @@ imageoptimizer_inject_frontend = 0
 imageoptimizer_convert_on_upload = 0
 ```
 
-Конвертация через CLI/cron; в шаблонах — ручной `<picture>` ([frontend-guide.md](frontend-guide.md)).
+Конвертация через CLI/cron. В шаблонах — ручной `<picture>` ([frontend-guide.md](frontend-guide.md)).
 
 ### Большой каталог, щадящий cron
 

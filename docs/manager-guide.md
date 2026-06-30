@@ -76,7 +76,7 @@ URL: **Компоненты → ImageOptimizer** или `manager/?a=index&namesp
 ### Типичные статусы
 
 - **skipped** — upscale skip, SVG, уже WebP, animated GIF, HEIC без декодера, MemoryLimit
-- **failed** — нет энкодера, ошибка диска; смотрите Error и [troubleshooting.md](troubleshooting.md)
+- **failed** — нет энкодера, ошибка диска. Смотрите Error и [troubleshooting.md](troubleshooting.md)
 
 ## Настройки
 
