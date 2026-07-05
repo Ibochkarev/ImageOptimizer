@@ -28,6 +28,24 @@ function imageoptimizer_html_cache_generation_path(modX $modx): string
     return imageoptimizer_cache_path($modx) . 'html_generation.txt';
 }
 
+function imageoptimizer_html_cache_allowed(modX $modx): bool
+{
+    if (!(bool) imageoptimizer_get_setting($modx, 'html_cache', true)) {
+        return false;
+    }
+
+    $contextKey = (string) $modx->context->get('key');
+    if ($modx->user && method_exists($modx->user, 'isAuthenticated') && $modx->user->isAuthenticated($contextKey)) {
+        return false;
+    }
+
+    if ($modx->getPlaceholder('imageoptimizer.skip_html_cache')) {
+        return false;
+    }
+
+    return true;
+}
+
 function imageoptimizer_clear_html_cache(modX $modx): void
 {
     $dir = imageoptimizer_cache_path($modx) . 'html/';

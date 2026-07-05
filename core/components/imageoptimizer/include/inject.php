@@ -28,7 +28,7 @@ function imageoptimizer_inject_html(modX $modx, string &$html): void
         return;
     }
 
-    $cacheEnabled = (bool) imageoptimizer_get_setting($modx, 'html_cache', true);
+    $cacheEnabled = imageoptimizer_html_cache_allowed($modx);
     $cacheFile = null;
     if ($cacheEnabled) {
         $cacheFile = imageoptimizer_html_cache_file($modx);
