@@ -25,7 +25,7 @@ npm run build:mgr
 php _build/build.php
 ```
 
-Архив: `core/packages/imageoptimizer-1.0.0-beta1.transport.zip` (версия из `_build/config.inc.php`).
+Архив: `core/packages/imageoptimizer-1.0.1-beta1.transport.zip` (версия из `_build/config.inc.php`).
 
 Скачать через браузер (если `download=1` в config):
 
