@@ -2,6 +2,41 @@
 
 defined('MODX_CORE_PATH') || exit;
 
+/**
+ * Pull script/style/noscript/textarea out before DOMDocument so markup inside
+ * JS/CSS strings is not rewritten (can inject literal </script> and break pages).
+ *
+ * @return array{0: string, 1: array<string, string>}
+ */
+function imageoptimizer_extract_raw_blocks(string $html): array
+{
+    $blocks = [];
+    $replaced = preg_replace_callback(
+        '#<(script|style|noscript|textarea)\b[^>]*>.*?</\1>#is',
+        static function (array $match) use (&$blocks): string {
+            $token = '<!--IMAGEOPTIMIZER_RAW_' . count($blocks) . '-->';
+            $blocks[$token] = $match[0];
+
+            return $token;
+        },
+        $html
+    );
+
+    return [$replaced ?? $html, $blocks];
+}
+
+/**
+ * @param array<string, string> $blocks
+ */
+function imageoptimizer_restore_raw_blocks(string $html, array $blocks): string
+{
+    if ($blocks === []) {
+        return $html;
+    }
+
+    return str_replace(array_keys($blocks), array_values($blocks), $html);
+}
+
 function imageoptimizer_load_html_document(string $html): ?DOMDocument
 {
     $doc = new DOMDocument();

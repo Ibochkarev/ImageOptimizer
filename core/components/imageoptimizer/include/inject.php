@@ -30,8 +30,10 @@ function imageoptimizer_inject_html(modX $modx, string &$html): void
 
     $cacheEnabled = imageoptimizer_html_cache_allowed($modx);
     $cacheFile = null;
+    // Hash rendered HTML so Fenom file: includes invalidate cache without resource editedon bump.
+    $contentHash = md5($html);
     if ($cacheEnabled) {
-        $cacheFile = imageoptimizer_html_cache_file($modx);
+        $cacheFile = imageoptimizer_html_cache_file($modx, $contentHash);
         if ($cacheFile !== null && is_file($cacheFile)) {
             $html = (string) file_get_contents($cacheFile);
 
@@ -39,7 +41,8 @@ function imageoptimizer_inject_html(modX $modx, string &$html): void
         }
     }
 
-    $doc = imageoptimizer_load_html_document($html);
+    [$htmlForDom, $rawBlocks] = imageoptimizer_extract_raw_blocks($html);
+    $doc = imageoptimizer_load_html_document($htmlForDom);
     if (!$doc) {
         return;
     }
@@ -100,7 +103,10 @@ function imageoptimizer_inject_html(modX $modx, string &$html): void
         $index++;
     }
 
-    $html = imageoptimizer_serialize_document($doc);
+    $html = imageoptimizer_restore_raw_blocks(
+        imageoptimizer_serialize_document($doc),
+        $rawBlocks
+    );
 
     if ($cacheEnabled && $cacheFile !== null) {
         $dir = dirname($cacheFile);
@@ -111,7 +117,7 @@ function imageoptimizer_inject_html(modX $modx, string &$html): void
     }
 }
 
-function imageoptimizer_html_cache_file(modX $modx): ?string
+function imageoptimizer_html_cache_file(modX $modx, string $contentHash = ''): ?string
 {
     if (!$modx->resource) {
         return null;
@@ -122,7 +128,9 @@ function imageoptimizer_html_cache_file(modX $modx): ?string
     $editedOn = (string) $modx->resource->get('editedon');
     $settingsHash = imageoptimizer_settings_hash($modx);
     $variantsGen = imageoptimizer_html_cache_generation($modx);
-    $key = md5($contextKey . '|' . $uri . '|' . $editedOn . '|' . $settingsHash . '|' . $variantsGen);
+    $key = md5(
+        $contextKey . '|' . $uri . '|' . $editedOn . '|' . $settingsHash . '|' . $variantsGen . '|' . $contentHash
+    );
 
     return imageoptimizer_cache_path($modx) . 'html/' . $key . '.html';
 }
