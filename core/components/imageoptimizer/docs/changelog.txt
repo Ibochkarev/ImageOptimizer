@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2-beta1] - 2026-07-11
+
+### Fixed
+- Inject не разбирает содержимое `<script>`, `<style>`, `<noscript>`, `<textarea>` через DOMDocument — строки с HTML в JS больше не ломают страницу
+- HTML-кэш inject учитывает хэш содержимого страницы (в т.ч. Fenom `file:`), а не только `editedon` ресурса
+
 ## [1.0.1-beta1] - 2026-07-05
 
 ### Fixed

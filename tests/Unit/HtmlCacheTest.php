@@ -47,13 +47,29 @@ final class HtmlCacheTest extends PHPUnit\Framework\TestCase
         $modx->resource->set('uri', 'catalog/');
         $modx->resource->set('editedon', '2026-01-01 00:00:00');
 
-        $before = imageoptimizer_html_cache_file($modx);
+        $before = imageoptimizer_html_cache_file($modx, 'hash-a');
         imageoptimizer_bump_html_cache_generation($modx);
-        $after = imageoptimizer_html_cache_file($modx);
+        $after = imageoptimizer_html_cache_file($modx, 'hash-a');
 
         $this->assertNotNull($before);
         $this->assertNotNull($after);
         $this->assertNotSame($before, $after);
+    }
+
+    public function test_cache_file_key_changes_when_html_content_hash_changes(): void
+    {
+        $modx = io_create_test_modx();
+        $modx->setOption('imageoptimizer.cache_path', $this->cacheRoot);
+        $modx->resource = new modResource();
+        $modx->resource->set('uri', 'ms3-delivery-widgets-test.html');
+        $modx->resource->set('editedon', '2026-01-01 00:00:00');
+
+        $a = imageoptimizer_html_cache_file($modx, md5('<p>old</p>'));
+        $b = imageoptimizer_html_cache_file($modx, md5('<p>new from fenom file</p>'));
+
+        $this->assertNotNull($a);
+        $this->assertNotNull($b);
+        $this->assertNotSame($a, $b);
     }
 
     public function test_clear_html_cache_resets_generation(): void

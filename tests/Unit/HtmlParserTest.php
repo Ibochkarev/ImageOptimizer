@@ -28,4 +28,28 @@ HTML;
         $this->assertSame(1, substr_count(strtolower($out), '<picture'));
         $this->assertStringNotContainsString('</source></picture>', $out);
     }
+
+    public function test_extract_restore_preserves_script_with_html_looking_strings(): void
+    {
+        $html = <<<'HTML'
+<p>before</p>
+<script>
+wrap.innerHTML = '<strong class="x">Smoke</strong><div id="ms3dw-test-smoke-delivery-radios"></div>';
+</script>
+<img src="/assets/a.jpg" alt="x">
+HTML;
+        [$forDom, $blocks] = imageoptimizer_extract_raw_blocks($html);
+        $this->assertStringNotContainsString('<script>', $forDom);
+        $this->assertCount(1, $blocks);
+
+        $doc = imageoptimizer_load_html_document($forDom);
+        $this->assertNotNull($doc);
+        $out = imageoptimizer_restore_raw_blocks(imageoptimizer_serialize_document($doc), $blocks);
+
+        $this->assertStringContainsString(
+            "wrap.innerHTML = '<strong class=\"x\">Smoke</strong><div id=\"ms3dw-test-smoke-delivery-radios\"></div>';",
+            $out
+        );
+        $this->assertStringNotContainsString('</script></div>', $out);
+    }
 }

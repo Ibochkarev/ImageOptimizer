@@ -31,7 +31,7 @@ if (!defined('MODX_CORE_PATH')) {
 return [
     'name' => 'ImageOptimizer',
     'name_lower' => 'imageoptimizer',
-    'version' => '1.0.1',
+    'version' => '1.0.2',
     'release' => 'beta1',
     'install' => true,
     'update' => [
