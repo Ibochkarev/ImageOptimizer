@@ -52,4 +52,64 @@ HTML;
         );
         $this->assertStringNotContainsString('</script></div>', $out);
     }
+
+    public function test_full_document_preserves_html_and_head(): void
+    {
+        $html = <<<'HTML'
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>IO full page</title>
+    <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+    <h1>Hello</h1>
+    <img src="/assets/a.jpg" alt="x">
+</body>
+</html>
+HTML;
+        $this->assertTrue(imageoptimizer_is_full_html_document($html));
+
+        $doc = imageoptimizer_load_html_document($html);
+        $this->assertNotNull($doc);
+        $out = imageoptimizer_serialize_document($doc);
+
+        $this->assertMatchesRegularExpression('/<html\b/i', $out);
+        $this->assertMatchesRegularExpression('/<head\b/i', $out);
+        $this->assertMatchesRegularExpression('/<body\b/i', $out);
+        $this->assertStringContainsString('IO full page', $out);
+        $this->assertStringContainsString('/assets/site.css', $out);
+        $this->assertStringContainsString('<img ', $out);
+        $this->assertStringNotContainsString('imageoptimizer-root', $out);
+        $this->assertStringNotContainsString('<?xml', $out);
+        $this->assertStringNotContainsString('<!--?xml', $out);
+        $this->assertDoesNotMatchRegularExpression('/<!--\s*\?xml/i', $out);
+        $this->assertStringStartsWith('<!DOCTYPE html>', ltrim($out));
+    }
+
+    public function test_normalize_strips_cached_xml_encoding_comment(): void
+    {
+        $dirty = "<!DOCTYPE html>\n<!--?xml encoding=\"UTF-8\"-->\n<html><head></head><body></body></html>";
+        $out = imageoptimizer_normalize_html_output($dirty);
+
+        $this->assertStringNotContainsString('<!--?xml', $out);
+        $this->assertStringContainsString('<html>', $out);
+    }
+
+    public function test_fragment_serialize_does_not_emit_document_shell(): void
+    {
+        $html = '<p>frag</p><img src="/assets/a.jpg" alt="x">';
+        $this->assertFalse(imageoptimizer_is_full_html_document($html));
+
+        $doc = imageoptimizer_load_html_document($html);
+        $this->assertNotNull($doc);
+        $out = imageoptimizer_serialize_document($doc);
+
+        $this->assertStringContainsString('<p>frag</p>', $out);
+        $this->assertStringContainsString('<img ', $out);
+        $this->assertDoesNotMatchRegularExpression('/^\s*<!DOCTYPE/i', $out);
+        $this->assertDoesNotMatchRegularExpression('/^\s*<html\b/i', $out);
+        $this->assertStringNotContainsString('imageoptimizer-root', $out);
+    }
 }

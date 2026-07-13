@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3-beta1] - 2026-07-13
+
+### Fixed
+- Inject сохраняет `<html>`, `<head>` и `<body>` на полном HTML-документе (больше не оборачивает страницу в `#imageoptimizer-root`)
+- Убран артефакт `<!--?xml encoding="UTF-8"-->` после inject; HTML-кэш инвалидируется через `IMAGEOPTIMIZER_HTML_SERIALIZE_REV`
+
 ## [1.0.2-beta1] - 2026-07-11
 
 ### Fixed
