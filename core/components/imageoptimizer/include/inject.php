@@ -129,7 +129,8 @@ function imageoptimizer_html_cache_file(modX $modx, string $contentHash = ''): ?
     $settingsHash = imageoptimizer_settings_hash($modx);
     $variantsGen = imageoptimizer_html_cache_generation($modx);
     $key = md5(
-        $contextKey . '|' . $uri . '|' . $editedOn . '|' . $settingsHash . '|' . $variantsGen . '|' . $contentHash
+        $contextKey . '|' . $uri . '|' . $editedOn . '|' . $settingsHash . '|' . $variantsGen
+        . '|' . $contentHash . '|' . IMAGEOPTIMIZER_HTML_SERIALIZE_REV
     );
 
     return imageoptimizer_cache_path($modx) . 'html/' . $key . '.html';
