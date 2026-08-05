@@ -8,9 +8,9 @@ Connector (Vue-админка), PHP-функции и форматы ответ�
 
 ## Connector API
 
-**URL:** `{assets_url}components/imageoptimizer/connector.php`  
-**Метод:** POST  
-**Параметр:** `action`  
+**URL:** `{assets_url}components/imageoptimizer/connector.php`
+**Метод:** POST
+**Параметр:** `action`
 **Контекст:** mgr (сессия + modAuth). Без авторизации — HTTP 401. Без permission — 403.
 
 ### Общий формат ответа
@@ -81,6 +81,8 @@ Connector (Vue-админка), PHP-функции и форматы ответ�
 }
 ```
 
+**Клиент (Vue, с 1.0.4):** `useQueueProcessor.js` вызывает `queue/process` в цикле, пока `queue.pending > 0` и `processed > 0`. При `409 worker_busy` — до 3 повторов с паузой 2 с. Пользователь может прервать цикл через **Остановить** (`cancelled: true` в callback).
+
 ### queue/rebuild
 
 | Permission | `imageoptimizer_run` |
@@ -105,8 +107,8 @@ Scan и постановка задач в очередь.
 
 | Permission | `imageoptimizer_run` |
 
-**Параметры:** `ids` — массив ID или CSV.  
-**Действие:** `failed` / `skipped` → `pending`.  
+**Параметры:** `ids` — массив ID или CSV.
+**Действие:** `failed` / `skipped` → `pending`.
 **Ответ:** `{ "updated": N }`.
 
 ### queue/clear
@@ -115,14 +117,14 @@ Scan и постановка задач в очередь.
 
 Удаление файлов вариантов и записей очереди.
 
-**Параметры:** `source`, `path`, `dry_run` (аналогично rebuild).  
+**Параметры:** `source`, `path`, `dry_run` (аналогично rebuild).
 **Ответ:** `{ "removed": N, "dry_run": bool }`. Сбрасывает HTML-кэш инъекции.
 
 ### queue/reset_stuck
 
 | Permission | `imageoptimizer_run` |
 
-Сброс `processing` старше `stuck_minutes` → `pending`.  
+Сброс `processing` старше `stuck_minutes` → `pending`.
 **Ответ:** `{ "reset": N }`.
 
 ### stats/summary
@@ -147,7 +149,7 @@ Scan и постановка задач в очередь.
 
 ## PHP API (основные функции)
 
-Подключение: `require_once MODX_CORE_PATH . 'components/imageoptimizer/include/helpers.php';`  
+Подключение: `require_once MODX_CORE_PATH . 'components/imageoptimizer/include/helpers.php';`
 (или через bootstrap плагина / CLI).
 
 ```php
@@ -164,8 +166,8 @@ $processed = imageoptimizer_process_queue($modx, 100);
 $html = imageoptimizer_inject_html($modx, $html, $resourceId);
 ```
 
-**Модель:** `ioQueue`, таблица `imageoptimizer_queue`.  
-**Статусы:** `QueueStatus` — pending, processing, done, failed, skipped.  
+**Модель:** `ioQueue`, таблица `imageoptimizer_queue`.
+**Статусы:** `QueueStatus` — pending, processing, done, failed, skipped.
 **Skip при конвертации:** `SkipReason` — UpscaleSkip, SvgSkip, MemoryLimit, …
 
 ---

@@ -70,7 +70,10 @@ export async function apiRequest(action, params = {}, options = {}) {
   }
 
   if (!response.ok || data.success === false) {
-    throw new Error(data.message || lex('imageoptimizer.error.request_failed', `Request failed: ${action}`))
+    const err = new Error(data.message || lex('imageoptimizer.error.request_failed', `Request failed: ${action}`))
+    err.status = response.status
+    err.code = data.code || null
+    throw err
   }
   return data
 }

@@ -3,7 +3,7 @@
 defined('MODX_CORE_PATH') || exit;
 
 /** Bump when inject serialize output format changes — invalidates HTML cache keys. */
-const IMAGEOPTIMIZER_HTML_SERIALIZE_REV = '3';
+const IMAGEOPTIMIZER_HTML_SERIALIZE_REV = '4';
 
 /**
  * Pull script/style/noscript/textarea out before DOMDocument so markup inside
@@ -75,9 +75,27 @@ function imageoptimizer_strip_libxml_encoding_artifacts(DOMDocument $doc): void
     }
 }
 
+function imageoptimizer_decode_numeric_entities(string $html): string
+{
+    return preg_replace_callback(
+        '/&#(?:x([0-9A-Fa-f]+)|([0-9]+));/',
+        static function (array $m): string {
+            $cp = ($m[1] ?? '') !== '' ? hexdec($m[1]) : (int) ($m[2] ?? 0);
+            if ($cp <= 0 || $cp > 0x10FFFF) {
+                return $m[0];
+            }
+            $char = mb_chr($cp, 'UTF-8');
+
+            return ($char !== false && $char !== '') ? $char : $m[0];
+        },
+        $html
+    ) ?? $html;
+}
+
 function imageoptimizer_load_html_document(string $html): ?DOMDocument
 {
-    $doc = new DOMDocument();
+    $doc = new DOMDocument('1.0', 'UTF-8');
+    $doc->encoding = 'UTF-8';
     $flags = LIBXML_NOERROR | LIBXML_NOWARNING;
     if (defined('LIBXML_HTML_NODEFDTD')) {
         $flags |= LIBXML_HTML_NODEFDTD;
@@ -152,5 +170,5 @@ function imageoptimizer_normalize_html_output(string $html): string
     }
     $html = preg_replace('#</source>\s*</picture>#i', '</picture>', $html) ?? $html;
 
-    return $html;
+    return imageoptimizer_decode_numeric_entities($html);
 }

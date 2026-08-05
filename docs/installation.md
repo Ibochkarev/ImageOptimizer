@@ -20,12 +20,12 @@
 Из корня репозитория ImageOptimizer (нужен установленный MODX — `_build/config.inc.php` находит `core/config/config.inc.php`):
 
 ```bash
-npm install
-npm run build:mgr
+pnpm install   # или npm install
+pnpm run build:mgr
 php _build/build.php
 ```
 
-Архив: `core/packages/imageoptimizer-1.0.3-beta1.transport.zip` (версия из `_build/config.inc.php`).
+Архив: `core/packages/imageoptimizer-1.0.4-beta1.transport.zip` (версия из `_build/config.inc.php`).
 
 Скачать через браузер (если `download=1` в config):
 
@@ -45,7 +45,7 @@ https://ваш-сайт/Extras/ImageOptimizer/_build/build.php?download=1
 После install resolver создаёт:
 
 - namespace `imageoptimizer`
-- таблицу `io_queue`
+- таблицу `imageoptimizer_queue`
 - права доступа (Administrator, Manager)
 - пункт меню **Компоненты → ImageOptimizer**
 - плагин **ImageOptimizer** (события File Manager + `OnWebPagePrerender`)
@@ -60,17 +60,13 @@ https://ваш-сайт/Extras/ImageOptimizer/_build/build.php?download=1
 ## Сборка админки (разработка)
 
 ```bash
-npm install
-npm run build:mgr
+pnpm install   # или npm install
+pnpm run build:mgr
 ```
 
 Результат: `assets/components/imageoptimizer/js/mgr/vue-dist/imageoptimizer-admin.min.js` (+ `.css`, шрифты PrimeIcons).
 
-Watch-режим:
-
-```bash
-npm run dev:mgr
-```
+Перед transport или деплоем на dev-сайт пересборка обязательна.
 
 ## Первый запуск на сайте
 
@@ -79,7 +75,7 @@ npm run dev:mgr
    - `imageoptimizer_inject_frontend`
    - `imageoptimizer_convert_on_upload`
 2. Убедитесь, что плагин **ImageOptimizer** активен.
-3. Добавьте cron **или** обрабатывайте очередь из админки (**Обработать очередь**):
+3. Настройте cron **или** обрабатывайте очередь из админки (**Обработать очередь** — батчи до `pending = 0`, см. [manager-guide.md](manager-guide.md)):
 
 ```bash
 */10 * * * * php /path/to/core/components/imageoptimizer/cron/convert.php
@@ -95,22 +91,9 @@ php core/components/imageoptimizer/cli/convert.php --source=1 --scan --path=asse
 
 Подробнее о настройках: [configuration.md](configuration.md).
 
-## Демо-страница и seed
+## Проверка после установки
 
-На dev-сайте MODX (шаблоны в `core/elements/`):
-
-```bash
-php core/elements/demo/seed_imageoptimizer_demo.php
-php core/elements/demo/seed_imageoptimizer_demo.php --run-cron   # + convert
-```
-
-Создаёт:
-
-- `assets/test/imageoptimizer/{hero.jpg, card-a.png, card-b.png}`
-- шаблон `imageoptimizer_test` (20 секций QA)
-- ресурс с alias `imageoptimizer-test`
-
-Проверка фронта: [testing.md](testing.md). URL: `/imageoptimizer-test.html` (зависит от friendly URLs).
+Ручной smoke-чеклист — [testing.md](testing.md). Отдельный seed-скрипт и QA-шаблон в transport не входят: проверяйте на своих страницах с `<img src="assets/...">` или соберите тестовый ресурс вручную.
 
 ## Обновление пакета
 

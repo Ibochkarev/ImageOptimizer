@@ -111,13 +111,14 @@ echo $?
 |---------------|----------------|
 | Пересобрать очередь (каталог) | `--scan --path=…` или `--path=…` |
 | Пересобрать (один файл) | `--path=assets/…/file.jpg --limit=10` |
-| **Обработать очередь** | `--limit=N` (без `--scan`) |
+| **Обработать очередь** | цикл `--limit=N` до `pending=0` (UI делает это автоматически с 1.0.4) |
+| **Остановить** | нет CLI-аналога — прервите процесс или дождитесь конца батча |
 | Retry failed | нет прямого CLI. Queue → Retry или connector |
 | Reset stuck | автоматически в cron, в UI — **Сбросить зависшие** |
 
 Connector: `queue/process`, `queue/rebuild`, `queue/retry`, `queue/reset_stuck` — [api.md](api.md), обзор в [developer-guide.md](developer-guide.md).
 
-`queue/process` и cron используют один lock — параллельный запуск вернёт `worker_busy`.
+`queue/process` и cron используют один lock — параллельный запуск вернёт `worker_busy`. UI повторяет запрос до 3 раз с паузой 2 с.
 
 ## Ошибки CLI
 

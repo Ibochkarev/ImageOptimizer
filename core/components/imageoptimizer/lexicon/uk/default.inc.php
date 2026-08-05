@@ -34,6 +34,10 @@ $_lang['imageoptimizer.queue.reset_stuck'] = 'Скинути завислі';
 $_lang['imageoptimizer.queue.process'] = 'Обробити чергу';
 $_lang['imageoptimizer.queue.process_done'] = 'Оброблено %s задач, у черзі залишилось %s';
 $_lang['imageoptimizer.queue.process_time_budget'] = 'Досягнуто ліміт часу PHP. Натисніть «Обробити» ще раз або налаштуйте cron.';
+$_lang['imageoptimizer.queue.processing'] = 'Обробка… залишилось %s';
+$_lang['imageoptimizer.queue.stop'] = 'Зупинити';
+$_lang['imageoptimizer.queue.all_done'] = 'Оброблено %s задач. Черга порожня.';
+$_lang['imageoptimizer.queue.stopped'] = 'Зупинено. Оброблено %s, у черзі %s.';
 $_lang['imageoptimizer.queue.rebuild_done'] = 'Додано %s задач';
 $_lang['imageoptimizer.queue.clear_done'] = 'Видалено %s варіантів';
 $_lang['imageoptimizer.queue.retry_done'] = 'Оновлено %s задач';
@@ -59,6 +63,7 @@ $_lang['imageoptimizer.filter.clear'] = 'Очистити фільтри';
 
 $_lang['imageoptimizer.live.on'] = 'Live';
 $_lang['imageoptimizer.live.off'] = 'Пауза';
+$_lang['imageoptimizer.live.hint'] = 'Лише цифри на екрані. Фон без вкладки: cron на вкладці «Сервер».';
 
 $_lang['imageoptimizer.save'] = 'Зберегти';
 $_lang['imageoptimizer.preview'] = 'Превью';

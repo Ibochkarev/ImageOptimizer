@@ -1,6 +1,6 @@
 # Фронтенд
 
-ImageOptimizer может автоматически улучшать разметку на выходе страницы и отдавать заранее созданные статические варианты WebP/AVIF.
+ImageOptimizer улучшает разметку на выходе страницы и отдаёт заранее созданные статические варианты WebP/AVIF.
 
 ## Авто-`<picture>`
 
@@ -38,6 +38,26 @@ ImageOptimizer может автоматически улучшать разме
 ```
 
 Точная разметка зависит от breakpoints, formats и `variant_pattern`.
+
+## Парсер HTML и безопасность разметки
+
+Инъекция использует `html_parser.php` (DOMDocument). Важные детали:
+
+### Полная HTML-страница
+
+Если ответ содержит `<!DOCTYPE html>` или корневой `<html>`, inject сохраняет `<html>`, `<head>`, `<body>`. Страница не оборачивается в лишний контейнер.
+
+### Блоки script / style / noscript / textarea
+
+Содержимое этих тегов **временно вырезается** до парсинга DOM и восстанавливается после. Строки с HTML внутри JavaScript (например `innerHTML = '<div>…'`) не ломают страницу.
+
+### UTF-8 и кириллица
+
+Текст в UTF-8 остаётся как есть. `saveHTML()` не превращает кириллицу в `&#1044;`. Числовые HTML-сущности в допустимом диапазоне декодируются обратно в символы.
+
+Артефакт `<!--?xml encoding="UTF-8"-->` после loadHTML удаляется.
+
+При смене формата сериализации сбрасывается HTML-кэш через константу `IMAGEOPTIMIZER_HTML_SERIALIZE_REV` (ключ кэша включает её значение).
 
 ## Условия пропуска (skip)
 
@@ -95,16 +115,41 @@ URL с `thumb3x` пропускаются, чтобы не дублироват�
 core/cache/imageoptimizer/html/
 ```
 
-Ключ кэша привязан к ресурсу и **generation-счётчику**: он увеличивается при каждом успешном `done` в очереди. Новые WebP попадают на фронт без смены `editedon` ресурса.
+### Когда кэш не используется
+
+- `imageoptimizer_html_cache=0`
+- пользователь **авторизован** на фронтенде (контекст web)
+- placeholder `imageoptimizer.skip_html_cache` установлен (сниппеты, плагины)
+
+### Ключ кэша
+
+Файл кэша привязан к:
+
+- контексту и URI ресурса
+- `editedon` ресурса
+- хэшу настроек inject
+- **generation-счётчику** (увеличивается при каждом успешном `done` в очереди)
+- **хэшу содержимого HTML** (Fenom `file:` и динамические include без смены `editedon`)
+- `IMAGEOPTIMIZER_HTML_SERIALIZE_REV`
+
+Новые WebP попадают на фронт без правки ресурса в MODX.
 
 Сброс кэша:
 
 - **Управление → Очистить кэш** (MODX)
 - События `OnSiteRefresh` / `OnCacheUpdate`
 - Connector action `queue/clear` (очистка HTML-кэша ImageOptimizer)
-- Смена настроек inject
+- Смена настроек inject или bump `IMAGEOPTIMIZER_HTML_SERIALIZE_REV` в коде
 
 Если после конвертации `<picture>` не появился — очистите кэш MODX и HTML-кэш ImageOptimizer.
+
+### Отключить кэш для одной страницы
+
+В сниппете или плагине до prerender:
+
+```php
+$modx->setPlaceholder('imageoptimizer.skip_html_cache', true);
+```
 
 ## Ручной вывод в шаблонах
 
@@ -140,5 +185,5 @@ core/cache/imageoptimizer/html/
 ## Связанные документы
 
 - [configuration.md](configuration.md) — все настройки inject
-- [testing.md](testing.md) — демо-страница с QA-кейсами
+- [testing.md](testing.md) — smoke и ручная проверка
 - [troubleshooting.md](troubleshooting.md) — если inject не срабатывает

@@ -53,7 +53,7 @@ npm run build:mgr
 
 ## MODX 3 Media Sources
 
-Поддерживаются **Filesystem** sources. S3/ FTP без локального пути — preflight `NonFilesystemSource`, задачи skipped.
+Поддерживаются **Filesystem** sources. S3/FTP без локального пути — preflight `NonFilesystemSource`, задачи skipped.
 
 На MODX 3 используется fallback `sources.modMediaSource` при резолве source для inject.
 

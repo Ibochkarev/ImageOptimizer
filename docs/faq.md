@@ -24,9 +24,13 @@ SVG не конвертируется и по умолчанию не попад
 
 Worker не стартует от загрузки файла или rebuild. Варианты:
 
-1. **Очередь → Обработать очередь** в админке (до `cron_limit` за раз)
-2. Cron: `cron/convert.php`
+1. **Обработать очередь** в админке — батчи до `pending = 0`, можно **Остановить** ([manager-guide.md](manager-guide.md))
+2. Cron: `cron/convert.php` (фон без открытой вкладки)
 3. CLI: `cli/convert.php --limit=N`
+
+### Нужно ли жать «Обработать» много раз?
+
+С версии 1.0.4 — нет. Одна кнопка крутит батчи, пока очередь не опустеет или вы не нажмёте **Остановить**. При лимите времени PHP дожмите cron или нажмите снова.
 
 ### Rebuild по папке показывает 0?
 
@@ -48,13 +52,17 @@ Worker не стартует от загрузки файла или rebuild. В
 
 ### `<picture>` не появляется
 
-1. `imageoptimizer_enabled` и `imageoptimizer_inject_frontend` = 1  
-2. Плагин активен, событие `OnWebPagePrerender`  
-3. Путь `<img src>` резолвится в media source (локальный `assets/...`)  
-4. На диске есть готовые варианты (status `done`)  
-5. Очистите кэш MODX (страница могла быть закэширована до inject)
+1. `imageoptimizer_enabled` и `imageoptimizer_inject_frontend` = 1
+2. Плагин активен, событие `OnWebPagePrerender`
+3. Путь `<img src>` резолвится в media source (локальный `assets/...`)
+4. На диске есть готовые варианты (status `done`)
+5. Очистите кэш MODX и HTML-кэш ImageOptimizer
 
 Подробнее: [troubleshooting.md](troubleshooting.md).
+
+### Кириллица превратилась в `&#1044;` после inject
+
+Обновите до 1.0.4+. Старый HTML-кэш удалите: **Очистить кэш** MODX или `queue/clear`. Подробнее: [frontend-guide.md](frontend-guide.md).
 
 ### Как отключить для одной картинки?
 
@@ -63,6 +71,10 @@ Worker не стартует от загрузки файла или rebuild. В
 ### Уже есть srcset на img
 
 ImageOptimizer не перезаписывает ваш srcset, может добавить lazy/decoding. Для полного `<picture>` уберите ручной srcset или используйте skip.
+
+### Inject не кэшируется для авторизованных
+
+Так задумано: HTML-кэш inject отключён для залогиненных на фронте. Проверяйте страницу в режиме инкогнито или после выхода из аккаунта.
 
 ## Админка
 
@@ -78,15 +90,19 @@ ImageOptimizer не перезаписывает ваш srcset, может до�
 
 Коннектор вернул HTML. Обновите страницу, проверьте Network → `connector.php`, пересоберите админку (`npm run build:mgr`). См. [troubleshooting.md](troubleshooting.md).
 
+### Live не обрабатывает очередь
+
+**Live** только обновляет цифры на экране. Фоновая обработка — cron (команда на вкладке **Server**).
+
 ### Server: все энкодеры «Не найден» (macOS Valet)
 
-FPM часто без imagick и с пустым PATH. CLI и FPM должны быть одной версии PHP. Установите imagick и `brew`-утилиты для FPM. [server-requirements.md](server-requirements.md).
+FPM часто без imagick и с пустым PATH. CLI и FPM должны быть одной версии PHP. [server-requirements.md](server-requirements.md).
 
 ## Производительность
 
 ### Нагрузка на cron
 
-Уменьшите `imageoptimizer_cron_limit` и `imageoptimizer_cron_max_runtime`. Конвертируйте ночью большими `--limit` через CLI.
+Уменьшите `imageoptimizer_cron_limit`. Конвертируйте ночью большими `--limit` через CLI.
 
 ### Размер диска
 
