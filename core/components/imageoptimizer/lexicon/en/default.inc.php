@@ -34,6 +34,10 @@ $_lang['imageoptimizer.queue.reset_stuck'] = 'Reset stuck';
 $_lang['imageoptimizer.queue.process'] = 'Process queue';
 $_lang['imageoptimizer.queue.process_done'] = 'Processed %s items, %s still pending';
 $_lang['imageoptimizer.queue.process_time_budget'] = 'PHP time limit reached. Click Process again or use cron.';
+$_lang['imageoptimizer.queue.processing'] = 'Processing… %s remaining';
+$_lang['imageoptimizer.queue.stop'] = 'Stop';
+$_lang['imageoptimizer.queue.all_done'] = 'Processed %s items. Queue is empty.';
+$_lang['imageoptimizer.queue.stopped'] = 'Stopped. Processed %s, %s pending.';
 $_lang['imageoptimizer.queue.rebuild_done'] = 'Enqueued %s items';
 $_lang['imageoptimizer.queue.clear_done'] = 'Removed %s variants';
 $_lang['imageoptimizer.queue.retry_done'] = 'Updated %s items';
@@ -59,6 +63,7 @@ $_lang['imageoptimizer.filter.clear'] = 'Clear filters';
 
 $_lang['imageoptimizer.live.on'] = 'Live';
 $_lang['imageoptimizer.live.off'] = 'Paused';
+$_lang['imageoptimizer.live.hint'] = 'Stats only. Background without this tab: cron on the Server tab.';
 
 $_lang['imageoptimizer.save'] = 'Save';
 $_lang['imageoptimizer.preview'] = 'Preview';

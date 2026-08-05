@@ -5,7 +5,7 @@
   "description": "ImageOptimizer — WebP/AVIF conversion and responsive srcset for MODX 3",
   "scripts": {
     "build:mgr": "vite build --config vite.mgr.config.js",
-    "build": "npm run build:mgr"
+    "build": "pnpm run build:mgr"
   },
   "dependencies": {
     "chart.js": "^4.4.8",

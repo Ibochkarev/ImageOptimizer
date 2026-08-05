@@ -112,4 +112,39 @@ HTML;
         $this->assertDoesNotMatchRegularExpression('/^\s*<html\b/i', $out);
         $this->assertStringNotContainsString('imageoptimizer-root', $out);
     }
+
+    public function test_decode_numeric_entities_roundtrip(): void
+    {
+        $this->assertSame("\u{0414}", imageoptimizer_decode_numeric_entities('&#1044;'));
+        $this->assertSame('A', imageoptimizer_decode_numeric_entities('&#x41;'));
+        $this->assertSame('&#9999999;', imageoptimizer_decode_numeric_entities('&#9999999;'));
+    }
+
+    public function test_serialize_preserves_cyrillic_utf8(): void
+    {
+        $word = "\u{0422}\u{0435}\u{0441}\u{043d}\u{043e}\u{0435}";
+        $html = '<p>' . $word . ' cooperation. &nbsp;Certified.</p><img src="/assets/a.jpg" alt="x">';
+        $doc = imageoptimizer_load_html_document($html);
+        $this->assertNotNull($doc);
+        $out = imageoptimizer_serialize_document($doc);
+
+        $this->assertStringContainsString($word, $out);
+        $this->assertStringNotContainsString('&#104', $out);
+        $this->assertStringContainsString('Certified.', $out);
+    }
+
+    public function test_full_document_preserves_cyrillic_in_title(): void
+    {
+        $title = "\u{0417}\u{0430}\u{0433}\u{043e}\u{043b}\u{043e}\u{0432}\u{043e}\u{043a} \u{0441}\u{0442}\u{0440}\u{0430}\u{043d}\u{0438}\u{0446}\u{044b}";
+        $heading = "\u{041f}\u{0440}\u{0438}\u{0432}\u{0435}\u{0442}, \u{043c}\u{0438}\u{0440}";
+        $html = '<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>' . $title
+            . '</title></head><body><h1>' . $heading . '</h1><img src="/assets/a.jpg" alt="x"></body></html>';
+        $doc = imageoptimizer_load_html_document($html);
+        $this->assertNotNull($doc);
+        $out = imageoptimizer_serialize_document($doc);
+
+        $this->assertStringContainsString($title, $out);
+        $this->assertStringContainsString($heading, $out);
+        $this->assertStringNotContainsString('&#1057;', $out);
+    }
 }

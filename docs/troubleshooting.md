@@ -10,7 +10,7 @@
 
 ### Шаги
 
-1. **Админка** — **Очередь → Обработать очередь** (нужно `imageoptimizer_run`). Обрабатывает до `cron_limit` за клик. Для большой очереди — несколько раз или cron.
+1. **Админка** — **Обработать очередь** (нужно `imageoptimizer_run`). С 1.0.4 кнопка крутит батчи до `pending = 0`. При необходимости **Остановить** и продолжить позже.
 2. **Cron** — строка в crontab указывает на правильный PHP и путь:
    ```bash
    php core/components/imageoptimizer/cron/convert.php
@@ -21,10 +21,14 @@
    ```bash
    php core/components/imageoptimizer/cli/convert.php --limit=10
    ```
-5. **Зависшие processing** — **Очередь → Сбросить зависшие** или дождитесь cron (`stuck_minutes`).
+5. **Зависшие processing** — **Сбросить зависшие** или дождитесь cron (`stuck_minutes`).
 6. **Энкодеры** — вкладка **Server**: WebP должен быть «Доступен».
 7. **enabled** — `imageoptimizer_enabled=1`.
-8. **409 worker_busy** — другой cron или «Обработать» уже работает. Подождите или снимите lock.
+8. **409 worker_busy** — cron или «Обработать» уже работает. UI повторяет до 3 раз. Подождите или снимите lock.
+
+### Лимит времени PHP в админке
+
+Если появилось «Достигнут лимит времени PHP» — остаток обработает cron или повторный клик **Обработать очередь**. Для больших каталогов настройте cron и не держите вкладку открытой.
 
 ### Ошибка «Unable to create cache directory»
 
@@ -46,6 +50,7 @@ chmod 775 core/cache/imageoptimizer
 5. Нет skip: класс из `skip_classes`, `skip_src_pattern`, `data-imageoptimizer-skip`
 6. **Кэш:** очистите кэш MODX. При `html_cache=1` — сброс HTML-кэша ImageOptimizer (см. [frontend-guide.md](frontend-guide.md))
 7. Страница не больше `max_html_size` (1 МБ по умолчанию)
+8. Страница открыта не под авторизованным пользователем (HTML-кэш inject для них отключён)
 
 ### Проверка HTML
 
@@ -53,9 +58,25 @@ chmod 775 core/cache/imageoptimizer
 curl -s 'https://example.com/page.html' | grep -E '<picture|\.webp'
 ```
 
+Для страницы с авторизацией откройте её в режиме инкогнито или под гостевой сессией.
+
 ### resolve_img_asset возвращает null
 
 Частая причина на MODX 3 — media source не находился по legacy alias. Убедитесь, что установлена актуальная версия extra с fallback на `sources.modMediaSource`.
+
+## Кириллица и HTML-сущности после inject
+
+### Симптомы
+
+Текст на странице показывает `&#1044;` вместо «Д», или появился `<!--?xml encoding="UTF-8"-->`.
+
+### Решение
+
+1. Обновите до **1.0.4+** (фикс в `html_parser.php`, `IMAGEOPTIMIZER_HTML_SERIALIZE_REV = 4`)
+2. Очистите HTML-кэш: **Очистить кэш** MODX или connector `queue/clear`
+3. Проверьте `<meta charset="UTF-8">` в шаблоне
+
+PHPUnit: `tests/Unit/HtmlParserTest.php` — кейсы `test_serialize_preserves_cyrillic_utf8`, `test_full_document_preserves_html_and_head`.
 
 ## Статус skipped в очереди
 

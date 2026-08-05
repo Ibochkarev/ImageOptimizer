@@ -8,6 +8,7 @@ import ClearVariantsDialog from './ClearVariantsDialog.js'
 import { useImageOptimizerApi } from '../composables/useImageOptimizerApi.js'
 import { useImageOptimizerNotify } from '../composables/useImageOptimizerNotify.js'
 import { useQueuePolling } from '../composables/useQueuePolling.js'
+import { useQueueProcessor } from "../composables/useQueueProcessor.js";
 import { getConfig, lex, lexFormat } from '../request.js'
 import { MGR_DATATABLE_SCROLL_HEIGHT } from '../layout.js'
 
@@ -21,7 +22,7 @@ const STATUS_OPTIONS = [
 ]
 
 export default defineComponent({
-  name: 'QueueGrid',
+  name: "QueueGrid",
   components: {
     DataTable,
     Column,
@@ -35,110 +36,167 @@ export default defineComponent({
     ClearVariantsDialog,
   },
   setup() {
-    const api = useImageOptimizerApi()
-    const { notifyError, notifySuccess, notifyWarn } = useImageOptimizerNotify()
-    const rows = ref([])
-    const total = ref(0)
-    const loading = ref(false)
-    const search = ref('')
-    const status = ref('')
-    const first = ref(0)
-    const pageSize = ref(50)
-    const selected = ref([])
-    const showRebuild = ref(false)
-    const showClear = ref(false)
-    const processing = ref(false)
-    const canRun = computed(() => Number(getConfig().permissions?.run) === 1)
-    const statusOptions = computed(() => STATUS_OPTIONS.map((o) => ({
-      value: o.value,
-      label: lex(o.labelKey),
-    })))
+    const api = useImageOptimizerApi();
+    const { notifyError, notifySuccess, notifyWarn } =
+      useImageOptimizerNotify();
+    const rows = ref([]);
+    const total = ref(0);
+    const loading = ref(false);
+    const search = ref("");
+    const status = ref("");
+    const first = ref(0);
+    const pageSize = ref(50);
+    const selected = ref([]);
+    const showRebuild = ref(false);
+    const showClear = ref(false);
+    const canRun = computed(() => Number(getConfig().permissions?.run) === 1);
+    const queueProcessor = useQueueProcessor();
+    const pollingWasEnabled = ref(false);
+    const statusOptions = computed(() =>
+      STATUS_OPTIONS.map((o) => ({
+        value: o.value,
+        label: lex(o.labelKey),
+      })),
+    );
+    const processButtonLabel = computed(() => {
+      if (queueProcessor.running.value) {
+        return lexFormat(
+          "imageoptimizer.queue.processing",
+          queueProcessor.pendingLeft.value,
+        );
+      }
+      return lex("imageoptimizer.queue.process");
+    });
 
     async function loadQueue() {
-      loading.value = true
+      loading.value = true;
       try {
         const res = await api.queueList({
           offset: first.value,
           limit: pageSize.value,
           query: search.value,
           status: status.value,
-        })
-        rows.value = res.data || []
-        total.value = Number(res.total ?? rows.value.length)
+        });
+        rows.value = res.data || [];
+        total.value = Number(res.total ?? rows.value.length);
       } catch (e) {
-        notifyError(e.message)
+        notifyError(e.message);
       } finally {
-        loading.value = false
+        loading.value = false;
       }
     }
 
     function onPage(event) {
-      first.value = event.first
-      pageSize.value = event.rows
-      loadQueue()
+      first.value = event.first;
+      pageSize.value = event.rows;
+      loadQueue();
     }
 
     function onSearch() {
-      first.value = 0
-      loadQueue()
+      first.value = 0;
+      loadQueue();
     }
 
     function clearFilters() {
-      search.value = ''
-      status.value = ''
-      first.value = 0
-      loadQueue()
+      search.value = "";
+      status.value = "";
+      first.value = 0;
+      loadQueue();
     }
 
     async function retrySelected() {
-      const ids = selected.value.map((row) => row.id).filter(Boolean)
+      const ids = selected.value.map((row) => row.id).filter(Boolean);
       if (ids.length === 0) {
-        return
+        return;
       }
       try {
-        const res = await api.queueRetry(ids)
-        notifySuccess(lexFormat('imageoptimizer.queue.retry_done', res.data?.updated ?? 0))
-        selected.value = []
-        await loadQueue()
+        const res = await api.queueRetry(ids);
+        notifySuccess(
+          lexFormat("imageoptimizer.queue.retry_done", res.data?.updated ?? 0),
+        );
+        selected.value = [];
+        await loadQueue();
       } catch (e) {
-        notifyError(e.message)
+        notifyError(e.message);
       }
     }
 
     async function processQueue() {
-      processing.value = true
-      try {
-        const res = await api.queueProcess()
-        const pendingLeft = Number(res.data?.queue?.pending ?? 0)
-        notifySuccess(lexFormat('imageoptimizer.queue.process_done', res.data?.processed ?? 0, pendingLeft))
-        if (res.data?.time_budget_exceeded) {
-          notifyWarn(lex('imageoptimizer.queue.process_time_budget'))
-        }
-        await loadQueue()
-      } catch (e) {
-        notifyError(e.message)
-      } finally {
-        processing.value = false
+      if (queueProcessor.running.value) {
+        return;
       }
+
+      pollingWasEnabled.value = polling.enabled.value;
+      if (!polling.enabled.value) {
+        polling.start();
+      }
+
+      await queueProcessor.runUntilDone({
+        onBatch: async () => {
+          await loadQueue();
+        },
+        onDone: async ({
+          totalProcessed,
+          pendingLeft,
+          cancelled,
+          timeBudgetHit,
+        }) => {
+          await loadQueue();
+          if (!pollingWasEnabled.value) {
+            polling.stop();
+          }
+          if (cancelled) {
+            notifyWarn(
+              lexFormat(
+                "imageoptimizer.queue.stopped",
+                totalProcessed,
+                pendingLeft,
+              ),
+            );
+          } else if (pendingLeft === 0) {
+            notifySuccess(
+              lexFormat("imageoptimizer.queue.all_done", totalProcessed),
+            );
+          } else {
+            notifyWarn(
+              lexFormat(
+                "imageoptimizer.queue.stopped",
+                totalProcessed,
+                pendingLeft,
+              ),
+            );
+          }
+          if (timeBudgetHit && pendingLeft > 0 && !cancelled) {
+            notifyWarn(lex("imageoptimizer.queue.process_time_budget"));
+          }
+        },
+        onError: (e) => {
+          notifyError(e.message);
+        },
+      });
+    }
+
+    function stopProcessing() {
+      queueProcessor.stop();
     }
 
     function formatBytes(bytes) {
-      const n = Number(bytes)
+      const n = Number(bytes);
       if (!n || n <= 0) {
-        return '—'
+        return "—";
       }
       if (n < 1024) {
-        return `${n} B`
+        return `${n} B`;
       }
       if (n < 1048576) {
-        return `${(n / 1024).toFixed(1)} KB`
+        return `${(n / 1024).toFixed(1)} KB`;
       }
-      return `${(n / 1048576).toFixed(2)} MB`
+      return `${(n / 1048576).toFixed(2)} MB`;
     }
 
-    const polling = useQueuePolling(loadQueue)
+    const polling = useQueuePolling(loadQueue);
 
-    onMounted(loadQueue)
+    onMounted(loadQueue);
 
     return {
       lex,
@@ -152,8 +210,9 @@ export default defineComponent({
       selected,
       showRebuild,
       showClear,
-      processing,
       canRun,
+      queueProcessor,
+      processButtonLabel,
       statusOptions,
       loadQueue,
       onPage,
@@ -161,10 +220,11 @@ export default defineComponent({
       clearFilters,
       retrySelected,
       processQueue,
+      stopProcessing,
       formatBytes,
       polling,
       scrollHeight: MGR_DATATABLE_SCROLL_HEIGHT,
-    }
+    };
   },
   template: `
     <div class="imageoptimizer-tab-panel imageoptimizer-datatable-shell">
@@ -183,14 +243,18 @@ export default defineComponent({
             onIcon="pi pi-bolt"
             offIcon="pi pi-bolt"
             @update:modelValue="(v) => v ? polling.start() : polling.stop()" />
-          <Button v-if="canRun" :label="lex('imageoptimizer.queue.process')" icon="pi pi-play" severity="info"
-            :loading="processing" @click="processQueue" />
+          <Button v-if="canRun && !queueProcessor.running.value"
+            :label="processButtonLabel" icon="pi pi-play" severity="info"
+            @click="processQueue" />
+          <Button v-else-if="canRun"
+            :label="lex('imageoptimizer.queue.stop')" icon="pi pi-stop" severity="danger"
+            @click="stopProcessing" />
           <Button v-if="canRun" :label="lex('imageoptimizer.queue.rebuild')" icon="pi pi-plus" severity="success"
-            @click="showRebuild = true" />
+            :disabled="queueProcessor.running.value" @click="showRebuild = true" />
           <Button v-if="canRun" :label="lex('imageoptimizer.queue.clear')" icon="pi pi-trash" severity="danger" outlined
-            @click="showClear = true" />
+            :disabled="queueProcessor.running.value" @click="showClear = true" />
           <Button v-if="canRun && selected.length" :label="lex('imageoptimizer.queue.retry')" icon="pi pi-replay"
-            @click="retrySelected" />
+            :disabled="queueProcessor.running.value" @click="retrySelected" />
         </template>
         <template #filters>
           <Select v-model="status" :options="statusOptions" optionLabel="label" optionValue="value"
@@ -201,7 +265,7 @@ export default defineComponent({
       <DataTable
         v-model:selection="selected"
         :value="rows"
-        :loading="loading"
+        :loading="loading || queueProcessor.running.value"
         dataKey="id"
         lazy
         paginator
@@ -246,4 +310,4 @@ export default defineComponent({
       <ClearVariantsDialog v-model:visible="showClear" @done="loadQueue" />
     </div>
   `,
-})
+});
