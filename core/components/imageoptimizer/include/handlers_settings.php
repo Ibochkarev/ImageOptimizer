@@ -32,7 +32,11 @@ function imageoptimizer_handle_settings_update(modX $modx): void
         $optionKey = 'imageoptimizer_' . $key;
         $setting = $modx->getObject('modSystemSetting', ['key' => $optionKey]);
         if (!$setting) {
-            continue;
+            $setting = $modx->newObject('modSystemSetting');
+            $setting->set('key', $optionKey);
+            $setting->set('namespace', 'imageoptimizer');
+            $setting->set('area', 'default');
+            $setting->set('xtype', 'textfield');
         }
         $setting->set('value', is_scalar($value) ? (string) $value : json_encode($value));
         if ($setting->save()) {
@@ -40,6 +44,7 @@ function imageoptimizer_handle_settings_update(modX $modx): void
             $modx->setOption($optionKey, $setting->get('value'));
         }
     }
+    $modx->cacheManager->refresh(['system_settings' => []]);
     imageoptimizer_clear_html_cache($modx);
     imageoptimizer_json_success(['updated' => $updated]);
 }
