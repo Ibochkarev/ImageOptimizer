@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5-beta1] - 2026-08-06
+
+### Fixed
+- Сохранение настроек в админке: handler создаёт `modSystemSetting`, если записи нет в БД, и сбрасывает кэш `system_settings` (иначе `updated=0` и после refresh всё сбрасывалось)
+
 ## [1.0.4-beta1] - 2026-08-01
 
 ### Fixed
 - Inject оставляет кириллицу и UTF-8 как есть; `saveHTML()` больше не превращает текст в `&#1044;`. HTML-кэш сбрасывается через `IMAGEOPTIMIZER_HTML_SERIALIZE_REV`
-- Сохранение настроек в админке: handler создаёт `modSystemSetting`, если записи нет в БД (иначе `updated=0` и после refresh всё сбрасывалось)
 
 ### Added
 - «Обработать очередь» крутит батчи до `pending = 0`, есть «Остановить»; у Live подсказка про cron
