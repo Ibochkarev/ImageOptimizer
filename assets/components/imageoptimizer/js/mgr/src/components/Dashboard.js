@@ -62,6 +62,9 @@ export default defineComponent({
         failed.value,
       );
     });
+    const statsLoading = computed(
+      () => loading.value && !queueProcessor.running.value,
+    );
 
     async function loadSummary({ quiet = false } = {}) {
       if (!quiet) {
@@ -134,15 +137,7 @@ export default defineComponent({
           if (!pollingWasEnabled.value) {
             polling.stop();
           }
-          if (cancelled) {
-            notifyWarn(
-              lexFormat(
-                "imageoptimizer.queue.stopped",
-                totalProcessed,
-                pendingLeft,
-              ),
-            );
-          } else if (pendingLeft === 0) {
+          if (!cancelled && pendingLeft === 0) {
             notifySuccess(
               lexFormat("imageoptimizer.queue.all_done", totalProcessed),
             );
@@ -191,45 +186,43 @@ export default defineComponent({
       stopProcessing,
       queueProcessor,
       processButtonLabel,
+      statsLoading,
       polling,
     };
   },
   template: `
     <div class="imageoptimizer-tab-panel">
-      <div class="flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+      <div class="flex flex-wrap align-items-center justify-content-between gap-1 mb-2">
         <div class="font-semibold text-lg">{{ lex('imageoptimizer.dashboard.title') }}</div>
-        <div class="flex flex-column align-items-end gap-1">
-          <ToggleButton
-            :modelValue="polling.enabled.value"
-            :onLabel="lex('imageoptimizer.live.on')"
-            :offLabel="lex('imageoptimizer.live.off')"
-            onIcon="pi pi-bolt"
-            offIcon="pi pi-bolt"
-            @update:modelValue="(v) => v ? polling.start() : polling.stop()" />
-          <span class="text-xs text-color-secondary">{{ lex('imageoptimizer.live.hint') }}</span>
-        </div>
+        <ToggleButton
+          :modelValue="polling.enabled.value"
+          :onLabel="lex('imageoptimizer.live.on')"
+          :offLabel="lex('imageoptimizer.live.off')"
+          onIcon="pi pi-bolt"
+          offIcon="pi pi-bolt"
+          @update:modelValue="(v) => v ? polling.start() : polling.stop()" />
       </div>
       <div class="grid">
         <div class="col-12 md:col-3">
           <StatCard :label="lex('imageoptimizer.status.pending')" :value="pending"
-            icon="pi pi-clock" :loading="loading && !queueProcessor.running.value" />
+            tone="warn" icon="pi pi-clock" :loading="statsLoading" />
         </div>
         <div class="col-12 md:col-3">
           <StatCard :label="lex('imageoptimizer.status.done')" :value="done"
-            icon="pi pi-check" :loading="loading && !queueProcessor.running.value" />
+            tone="success" icon="pi pi-check" :loading="statsLoading" />
         </div>
         <div class="col-12 md:col-3">
           <StatCard :label="lex('imageoptimizer.status.failed')" :value="failed"
-            icon="pi pi-times" :loading="loading && !queueProcessor.running.value" />
+            tone="danger" icon="pi pi-times" :loading="statsLoading" />
         </div>
         <div class="col-12 md:col-3">
           <StatCard :label="lex('imageoptimizer.status.skipped')" :value="skipped"
-            icon="pi pi-forward" :loading="loading && !queueProcessor.running.value" />
+            tone="muted" icon="pi pi-forward" :loading="statsLoading" />
         </div>
       </div>
       <div class="grid mt-1">
         <div class="col-12 md:col-8">
-          <StatCard :label="lex('imageoptimizer.dashboard.progress')" :value="progress + '%'" icon="pi pi-chart-line" :loading="loading && !queueProcessor.running.value">
+          <StatCard :label="lex('imageoptimizer.dashboard.progress')" :value="progress + '%'" icon="pi pi-chart-line" :loading="statsLoading">
             <ProgressBar :value="progress" class="mt-2" />
             <div v-if="queueProcessor.running.value" class="text-sm text-color-secondary mt-2">
               {{ batchProgressText }}
@@ -238,12 +231,12 @@ export default defineComponent({
         </div>
         <div class="col-12 md:col-4">
           <StatCard :label="lex('imageoptimizer.dashboard.readiness')" :value="summary.readiness + '%'"
-            icon="pi pi-server" :loading="loading && !queueProcessor.running.value" />
+            tone="muted" secondary icon="pi pi-server" :loading="statsLoading" />
         </div>
       </div>
-      <div v-if="canRun" class="flex flex-wrap gap-2 mt-2">
+      <div v-if="canRun" class="flex flex-wrap gap-1 mt-2">
         <Button v-if="!queueProcessor.running.value"
-          :label="processButtonLabel" icon="pi pi-play" severity="info"
+          :label="processButtonLabel" icon="pi pi-play"
           :disabled="pending === 0" @click="processQueue" />
         <Button v-else
           :label="lex('imageoptimizer.queue.stop')" icon="pi pi-stop" severity="danger"

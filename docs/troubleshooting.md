@@ -100,7 +100,7 @@ PHPUnit: `tests/Unit/HtmlParserTest.php` — кейсы `test_serialize_preserve
 
 ## Админка не открывается / белый экран
 
-1. Установите **VueTools ≥ 1.1.2-pl**
+1. Установите **VueTools ≥ 1.2.0-pl**
 2. Пересоберите бандл: `npm run build:mgr`
 3. Очистите кэш браузера и MODX
 4. Консоль браузера: ошибки загрузки `imageoptimizer-admin.min.js`

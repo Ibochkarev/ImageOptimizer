@@ -6,7 +6,7 @@
 
 $_lang['imageoptimizer'] = 'ImageOptimizer';
 $_lang['imageoptimizer.desc'] = 'WebP/AVIF conversion and responsive images';
-$_lang['imageoptimizer_vuetools_required'] = 'ImageOptimizer requires VueTools 1.1.2+. Install it via Package Manager.';
+$_lang['imageoptimizer_vuetools_required'] = 'ImageOptimizer requires VueTools 1.2.0+. Install it via Package Manager.';
 
 $_lang['imageoptimizer.tab.dashboard'] = 'Dashboard';
 $_lang['imageoptimizer.tab.queue'] = 'Queue';
@@ -27,11 +27,11 @@ $_lang['imageoptimizer.status.skipped'] = 'Skipped';
 
 $_lang['imageoptimizer.queue.empty'] = 'Queue is empty';
 $_lang['imageoptimizer.queue.empty_detail'] = 'Upload images or run a rebuild to enqueue conversion jobs.';
-$_lang['imageoptimizer.queue.rebuild'] = 'Rebuild queue';
-$_lang['imageoptimizer.queue.clear'] = 'Clear variants';
+$_lang['imageoptimizer.queue.rebuild'] = 'Rebuild';
+$_lang['imageoptimizer.queue.clear'] = 'Clear';
 $_lang['imageoptimizer.queue.retry'] = 'Retry selected';
-$_lang['imageoptimizer.queue.reset_stuck'] = 'Reset stuck';
-$_lang['imageoptimizer.queue.process'] = 'Process queue';
+$_lang['imageoptimizer.queue.reset_stuck'] = 'Reset';
+$_lang['imageoptimizer.queue.process'] = 'Process';
 $_lang['imageoptimizer.queue.process_done'] = 'Processed %s items, %s still pending';
 $_lang['imageoptimizer.queue.process_time_budget'] = 'PHP time limit reached. Click Process again or use cron.';
 $_lang['imageoptimizer.queue.processing'] = 'Processing… %s remaining';
@@ -62,9 +62,10 @@ $_lang['imageoptimizer.filter.status'] = 'Status';
 $_lang['imageoptimizer.filter.search'] = 'Search';
 $_lang['imageoptimizer.filter.clear'] = 'Clear filters';
 
-$_lang['imageoptimizer.live.on'] = 'Live';
-$_lang['imageoptimizer.live.off'] = 'Paused';
-$_lang['imageoptimizer.live.hint'] = 'Stats only. Background without this tab: cron on the Server tab.';
+$_lang['imageoptimizer.live.on'] = 'Auto-refresh';
+$_lang['imageoptimizer.live.off'] = 'Off';
+$_lang['imageoptimizer.server.refresh'] = 'Refresh encoder check';
+$_lang['imageoptimizer.server.cron_copy'] = 'Copy cron command';
 
 $_lang['imageoptimizer.save'] = 'Save';
 $_lang['imageoptimizer.preview'] = 'Preview';
@@ -94,7 +95,7 @@ $_lang['imageoptimizer.compat.hint'] = 'ImageOptimizer skips Thumb3x URLs via sk
 $_lang['imageoptimizer.compat.hint.thumb3x'] = 'URLs containing thumb3x are skipped via skip_src_pattern (on-the-fly thumbs).';
 $_lang['imageoptimizer.compat.hint.pthumb'] = 'pThumb does not conflict: ImageOptimizer variants sit next to originals.';
 $_lang['imageoptimizer.compat.hint.minishop3'] = 'Storefront <picture> injection without editing product chunks.';
-$_lang['imageoptimizer.compat.hint.vuetools'] = 'VueTools 1.1.2+ is required for this admin UI.';
+$_lang['imageoptimizer.compat.hint.vuetools'] = 'VueTools 1.2.0+ is required for this admin UI (theme via vuetools.theme).';
 
 $_lang['imageoptimizer.notify.success'] = 'Success';
 $_lang['imageoptimizer.notify.error'] = 'Error';

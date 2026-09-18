@@ -151,15 +151,7 @@ export default defineComponent({
           if (!pollingWasEnabled.value) {
             polling.stop();
           }
-          if (cancelled) {
-            notifyWarn(
-              lexFormat(
-                "imageoptimizer.queue.stopped",
-                totalProcessed,
-                pendingLeft,
-              ),
-            );
-          } else if (pendingLeft === 0) {
+          if (!cancelled && pendingLeft === 0) {
             notifySuccess(
               lexFormat("imageoptimizer.queue.all_done", totalProcessed),
             );
@@ -251,7 +243,7 @@ export default defineComponent({
             offIcon="pi pi-bolt"
             @update:modelValue="(v) => v ? polling.start() : polling.stop()" />
           <Button v-if="canRun && !queueProcessor.running.value"
-            :label="processButtonLabel" icon="pi pi-play" severity="info"
+            :label="processButtonLabel" icon="pi pi-play"
             @click="processQueue" />
           <Button v-else-if="canRun"
             :label="lex('imageoptimizer.queue.stop')" icon="pi pi-stop" severity="danger"
@@ -259,11 +251,11 @@ export default defineComponent({
           <span v-if="queueProcessor.running.value" class="text-sm text-color-secondary align-self-center">
             {{ lexFormat('imageoptimizer.queue.batch_progress', queueProcessor.totalProcessed.value, queueProcessor.pendingLeft.value, '—') }}
           </span>
-          <Button v-if="canRun" :label="lex('imageoptimizer.queue.rebuild')" icon="pi pi-plus" severity="success"
+          <Button v-if="canRun" :label="lex('imageoptimizer.queue.rebuild')" icon="pi pi-plus" severity="secondary"
             :disabled="queueProcessor.running.value" @click="showRebuild = true" />
           <Button v-if="canRun" :label="lex('imageoptimizer.queue.clear')" icon="pi pi-trash" severity="danger" outlined
             :disabled="queueProcessor.running.value" @click="showClear = true" />
-          <Button v-if="canRun && selected.length" :label="lex('imageoptimizer.queue.retry')" icon="pi pi-replay"
+          <Button v-if="canRun && selected.length" :label="lex('imageoptimizer.queue.retry')" icon="pi pi-replay" severity="secondary"
             :disabled="queueProcessor.running.value" @click="retrySelected" />
         </template>
         <template #filters>
@@ -303,7 +295,9 @@ export default defineComponent({
         </Column>
         <Column field="format" :header="lex('imageoptimizer.col.format')" style="width: 5rem" />
         <Column field="width" :header="lex('imageoptimizer.col.width')" style="width: 5rem" />
-        <Column field="status" :header="lex('imageoptimizer.col.status')" style="width: 7rem">
+        <Column field="status" :header="lex('imageoptimizer.col.status')"
+          headerClass="imageoptimizer-col-status" bodyClass="imageoptimizer-col-status"
+          style="width: 7.5rem; min-width: 6.5rem">
           <template #body="{ data }">
             <QueueStatusTag :status="data.status" />
           </template>

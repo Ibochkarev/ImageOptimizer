@@ -95,7 +95,7 @@ class ImageOptimizerIndexManagerController extends modManagerController
     {
         $title = addslashes($this->modx->lexicon('imageoptimizer') ?: 'ImageOptimizer');
         $message = addslashes($this->modx->lexicon('imageoptimizer_vuetools_required')
-            ?: 'Для работы ImageOptimizer требуется пакет VueTools 1.1.2+. Установите его через Менеджер пакетов.');
+            ?: 'Для работы ImageOptimizer требуется пакет VueTools 1.2.0+. Установите его через Менеджер пакетов.');
         $script = <<<JS
 <script>
 (function(){

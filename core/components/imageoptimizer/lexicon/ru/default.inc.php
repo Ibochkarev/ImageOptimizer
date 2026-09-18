@@ -6,7 +6,7 @@
 
 $_lang['imageoptimizer'] = 'ImageOptimizer';
 $_lang['imageoptimizer.desc'] = 'Конвертация WebP/AVIF и responsive изображения';
-$_lang['imageoptimizer_vuetools_required'] = 'Для ImageOptimizer нужен VueTools 1.1.2+. Установите через Менеджер пакетов.';
+$_lang['imageoptimizer_vuetools_required'] = 'Для ImageOptimizer нужен VueTools 1.2.0+. Установите через Менеджер пакетов.';
 
 $_lang['imageoptimizer.tab.dashboard'] = 'Обзор';
 $_lang['imageoptimizer.tab.queue'] = 'Очередь';
@@ -27,11 +27,11 @@ $_lang['imageoptimizer.status.skipped'] = 'Пропуск';
 
 $_lang['imageoptimizer.queue.empty'] = 'Очередь пуста';
 $_lang['imageoptimizer.queue.empty_detail'] = 'Загрузите изображения или запустите пересборку очереди.';
-$_lang['imageoptimizer.queue.rebuild'] = 'Пересобрать очередь';
-$_lang['imageoptimizer.queue.clear'] = 'Очистить варианты';
+$_lang['imageoptimizer.queue.rebuild'] = 'Пересобрать';
+$_lang['imageoptimizer.queue.clear'] = 'Очистить';
 $_lang['imageoptimizer.queue.retry'] = 'Повторить выбранные';
-$_lang['imageoptimizer.queue.reset_stuck'] = 'Сбросить зависшие';
-$_lang['imageoptimizer.queue.process'] = 'Обработать очередь';
+$_lang['imageoptimizer.queue.reset_stuck'] = 'Сбросить';
+$_lang['imageoptimizer.queue.process'] = 'Обработать';
 $_lang['imageoptimizer.queue.process_done'] = 'Обработано %s задач, в очереди осталось %s';
 $_lang['imageoptimizer.queue.process_time_budget'] = 'Достигнут лимит времени PHP. Нажмите «Обработать» ещё раз или настройте cron.';
 $_lang['imageoptimizer.queue.processing'] = 'Обработка… осталось %s';
@@ -62,9 +62,10 @@ $_lang['imageoptimizer.filter.status'] = 'Статус';
 $_lang['imageoptimizer.filter.search'] = 'Поиск';
 $_lang['imageoptimizer.filter.clear'] = 'Сбросить фильтры';
 
-$_lang['imageoptimizer.live.on'] = 'Live';
-$_lang['imageoptimizer.live.off'] = 'Пауза';
-$_lang['imageoptimizer.live.hint'] = 'Только цифры на экране. Фон без вкладки: cron на вкладке «Сервер».';
+$_lang['imageoptimizer.live.on'] = 'Автообновление';
+$_lang['imageoptimizer.live.off'] = 'Выкл';
+$_lang['imageoptimizer.server.refresh'] = 'Обновить проверку энкодеров';
+$_lang['imageoptimizer.server.cron_copy'] = 'Скопировать cron-команду';
 
 $_lang['imageoptimizer.save'] = 'Сохранить';
 $_lang['imageoptimizer.preview'] = 'Превью';
@@ -94,7 +95,7 @@ $_lang['imageoptimizer.compat.hint'] = 'ImageOptimizer пропускает URL 
 $_lang['imageoptimizer.compat.hint.thumb3x'] = 'URL с thumb3x пропускаются через skip_src_pattern (on-the-fly превью).';
 $_lang['imageoptimizer.compat.hint.pthumb'] = 'pThumb не конфликтует: варианты ImageOptimizer лежат рядом с оригиналом.';
 $_lang['imageoptimizer.compat.hint.minishop3'] = 'Инъекция <picture> на витрине без правки чанков товаров.';
-$_lang['imageoptimizer.compat.hint.vuetools'] = 'VueTools 1.1.2+ обязателен для этой админки.';
+$_lang['imageoptimizer.compat.hint.vuetools'] = 'VueTools 1.2.0+ обязателен для этой админки (тема через vuetools.theme).';
 
 $_lang['imageoptimizer.notify.success'] = 'Успех';
 $_lang['imageoptimizer.notify.error'] = 'Ошибка';

@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { Toolbar, IconField, InputIcon, InputText, Button } from 'primevue'
 
 export default defineComponent({
@@ -12,6 +12,8 @@ export default defineComponent({
   },
   emits: ['update:search', 'search', 'clear'],
   setup(props, { emit }) {
+    const clearLabel = computed(() => props.clearTitle || props.searchPlaceholder)
+
     function onInput(value) {
       emit('update:search', value)
     }
@@ -22,10 +24,10 @@ export default defineComponent({
       emit('update:search', '')
       emit('clear')
     }
-    return { onInput, onEnter, onClear }
+    return { clearLabel, onInput, onEnter, onClear }
   },
   template: `
-    <Toolbar class="imageoptimizer-filter-toolbar mb-3 border-round">
+    <Toolbar class="imageoptimizer-filter-toolbar mb-2">
       <template #start>
         <div class="flex flex-wrap align-items-center gap-2">
           <slot name="start" />
@@ -44,7 +46,9 @@ export default defineComponent({
               @keyup.enter="onEnter" />
           </IconField>
           <Button icon="pi pi-filter-slash" severity="secondary" text rounded
-            :title="clearTitle || searchPlaceholder" @click="onClear" />
+            :aria-label="clearLabel"
+            :title="clearLabel"
+            @click="onClear" />
         </div>
       </template>
     </Toolbar>

@@ -7,7 +7,7 @@
 | MODX Revolution | ≥ 3.0.0 | Платформа |
 | PHP | ≥ 8.2.0 | Runtime (enum, readonly) |
 | [pdoTools](https://modx.pro/components/pdotools) | актуальная | Зависимость transport (resolver) |
-| [VueTools](https://docs.modx.pro/components/vuetools/) | ≥ 1.1.2-pl | Админка (Vue 3 + PrimeVue) |
+| [VueTools](https://docs.modx.pro/components/vuetools/) | ≥ 1.2.0-pl | Админка (Vue 3 + PrimeVue, тема `vuetools.theme`) |
 | GD **или** Imagick | с WebP | Минимум для конвертации |
 | MiniShop3 | опционально | Витрина. Инъекция работает на любом HTML-сайте |
 
@@ -25,7 +25,7 @@ pnpm run build:mgr
 php _build/build.php
 ```
 
-Архив: `core/packages/imageoptimizer-1.0.5-beta1.transport.zip` (версия из `_build/config.inc.php`).
+Архив: `core/packages/imageoptimizer-1.0.6-beta1.transport.zip` (версия из `_build/config.inc.php`).
 
 Скачать через браузер (если `download=1` в config):
 
