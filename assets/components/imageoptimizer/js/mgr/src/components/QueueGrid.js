@@ -68,8 +68,10 @@ export default defineComponent({
       return lex("imageoptimizer.queue.process");
     });
 
-    async function loadQueue() {
-      loading.value = true;
+    async function loadQueue({ quiet = false } = {}) {
+      if (!quiet) {
+        loading.value = true;
+      }
       try {
         const res = await api.queueList({
           offset: first.value,
@@ -80,9 +82,13 @@ export default defineComponent({
         rows.value = res.data || [];
         total.value = Number(res.total ?? rows.value.length);
       } catch (e) {
-        notifyError(e.message);
+        if (!quiet) {
+          notifyError(e.message);
+        }
       } finally {
-        loading.value = false;
+        if (!quiet) {
+          loading.value = false;
+        }
       }
     }
 
@@ -133,7 +139,7 @@ export default defineComponent({
 
       await queueProcessor.runUntilDone({
         onBatch: async () => {
-          await loadQueue();
+          await loadQueue({ quiet: true });
         },
         onDone: async ({
           totalProcessed,
@@ -200,6 +206,7 @@ export default defineComponent({
 
     return {
       lex,
+      lexFormat,
       rows,
       total,
       loading,
@@ -249,6 +256,9 @@ export default defineComponent({
           <Button v-else-if="canRun"
             :label="lex('imageoptimizer.queue.stop')" icon="pi pi-stop" severity="danger"
             @click="stopProcessing" />
+          <span v-if="queueProcessor.running.value" class="text-sm text-color-secondary align-self-center">
+            {{ lexFormat('imageoptimizer.queue.batch_progress', queueProcessor.totalProcessed.value, queueProcessor.pendingLeft.value, '—') }}
+          </span>
           <Button v-if="canRun" :label="lex('imageoptimizer.queue.rebuild')" icon="pi pi-plus" severity="success"
             :disabled="queueProcessor.running.value" @click="showRebuild = true" />
           <Button v-if="canRun" :label="lex('imageoptimizer.queue.clear')" icon="pi pi-trash" severity="danger" outlined
@@ -265,7 +275,7 @@ export default defineComponent({
       <DataTable
         v-model:selection="selected"
         :value="rows"
-        :loading="loading || queueProcessor.running.value"
+        :loading="loading && !queueProcessor.running.value"
         dataKey="id"
         lazy
         paginator

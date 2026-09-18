@@ -54,9 +54,11 @@ function imageoptimizer_handle_settings_update(modX $modx): void
  */
 function imageoptimizer_settings_export(modX $modx): array
 {
+    $boolKeys = imageoptimizer_settings_bool_keys();
     $result = [];
     foreach (imageoptimizer_settings_keys() as $key) {
-        $result[$key] = imageoptimizer_get_setting($modx, $key);
+        $value = imageoptimizer_get_setting($modx, $key);
+        $result[$key] = in_array($key, $boolKeys, true) ? (bool) $value : $value;
     }
 
     return $result;

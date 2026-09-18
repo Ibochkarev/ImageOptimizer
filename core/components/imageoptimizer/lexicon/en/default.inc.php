@@ -35,6 +35,7 @@ $_lang['imageoptimizer.queue.process'] = 'Process queue';
 $_lang['imageoptimizer.queue.process_done'] = 'Processed %s items, %s still pending';
 $_lang['imageoptimizer.queue.process_time_budget'] = 'PHP time limit reached. Click Process again or use cron.';
 $_lang['imageoptimizer.queue.processing'] = 'Processing… %s remaining';
+$_lang['imageoptimizer.queue.batch_progress'] = 'This run: %s · pending: %s · failed: %s';
 $_lang['imageoptimizer.queue.stop'] = 'Stop';
 $_lang['imageoptimizer.queue.all_done'] = 'Processed %s items. Queue is empty.';
 $_lang['imageoptimizer.queue.stopped'] = 'Stopped. Processed %s, %s pending.';

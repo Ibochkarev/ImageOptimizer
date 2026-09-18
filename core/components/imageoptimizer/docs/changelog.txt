@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Сохранение настроек в админке: handler создаёт `modSystemSetting`, если записи нет в БД, и сбрасывает кэш `system_settings` (иначе `updated=0` и после refresh всё сбрасывалось)
+- `settings/get` отдаёт булевы настройки (`enabled`, `convert_on_upload`, `html_cache` и т.д.) как `true`/`false`, а не строки `'1'`/`'0'` — иначе переключатели в админке снова показывались включёнными после сохранения
+- Обзор: во время «Обработать очередь» карточки больше не закрываются скелетоном — видны pending/done/failed/skipped
+- Live и polling не перерисовывают «Готовность сервера» каждые 5 с; обновляются только счётчики очереди
+- Вкладка «Очередь»: таблица не закрывается loading-спиннером на время обработки; обновление строк идёт quietly
+- Uninstall: `resolver_uninstall.php` больше не делает безусловный `require_once` файлов компонента (file-resolver может удалить их раньше). Флаг cleanup читается из БД; DROP TABLE и очистка `core/cache/imageoptimizer/` — без helpers; удаление вариантов на диске — только если helpers ещё есть, в `try/catch`. Диалог uninstall больше не зависает с 500
+
+### Changed
+- Прогресс на Обзоре считает завершённые задачи (done + failed + skipped), а не только done
+- Под прогрессом строка «В этом запуске / в очереди / ошибки» (`imageoptimizer.queue.batch_progress`)
+- Подсказки настроек: `convert_on_upload` явно не влияет на «Пересобрать» и breakpoints; пустые breakpoints = только full-size WebP/AVIF без ресайза (для уже подогнанных медиа)
+
+### Added
+- PHPUnit: `SettingsTest`, `UninstallResolverTest`
 
 ## [1.0.4-beta1] - 2026-08-01
 
