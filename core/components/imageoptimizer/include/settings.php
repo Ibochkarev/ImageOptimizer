@@ -15,6 +15,19 @@ function imageoptimizer_is_enabled(modX $modx): bool
 /**
  * @return list<string>
  */
+function imageoptimizer_settings_bool_keys(): array
+{
+    return [
+        'enabled', 'avif_enabled', 'upscale', 'inject_frontend', 'inject_email',
+        'respect_existing_srcset', 'respect_existing_picture', 'respect_existing_loading',
+        'html_cache', 'convert_on_upload', 'reencode_if_unchanged', 'preserve_exif',
+        'preserve_icc', 'cleanup_on_uninstall',
+    ];
+}
+
+/**
+ * @return list<string>
+ */
 function imageoptimizer_settings_keys(): array
 {
     return [

@@ -44,10 +44,10 @@ $_lang['setting_imageoptimizer_skip_classes'] = 'CSS-класи для проп�
 $_lang['setting_imageoptimizer_skip_classes_desc'] = 'Класи <img> через кому.';
 
 $_lang['setting_imageoptimizer_convert_on_upload'] = 'Конвертація при завантаженні';
-$_lang['setting_imageoptimizer_convert_on_upload_desc'] = 'Додавати в чергу або синхронно конвертувати при завантаженні в File Manager.';
+$_lang['setting_imageoptimizer_convert_on_upload_desc'] = 'Автоматично ставити файл у чергу при завантаженні в File Manager. Не впливає на «Пересобрати чергу» і не вимикає responsive-ширини.';
 
-$_lang['setting_imageoptimizer_breakpoints'] = 'Брейкпоінти';
-$_lang['setting_imageoptimizer_breakpoints_desc'] = 'Ширини responsive (CSV). Пусто = лише оригінал. За замовчуванням: 480,768,1024,1440,1920.';
+$_lang['setting_imageoptimizer_breakpoints'] = 'Responsive-ширини (breakpoints)';
+$_lang['setting_imageoptimizer_breakpoints_desc'] = 'Через кому: 480,768,1024… Для кожного файлу — задача на кожну ширину + full-size (0). Якщо розміри вже готові в медіа — залиште порожнім: лише WebP/AVIF оригіналу без ресайзу.';
 
 $_lang['setting_imageoptimizer_variant_pattern'] = 'Шаблон імені варіанту';
 $_lang['setting_imageoptimizer_variant_pattern_desc'] = 'Плейсхолдери: {basename}, {width}, {ext}. Ширина 0 → image.jpg.webp.';

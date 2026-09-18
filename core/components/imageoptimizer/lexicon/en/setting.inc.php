@@ -44,10 +44,10 @@ $_lang['setting_imageoptimizer_skip_classes'] = 'Skip CSS classes';
 $_lang['setting_imageoptimizer_skip_classes_desc'] = 'Comma-separated classes on <img> to skip.';
 
 $_lang['setting_imageoptimizer_convert_on_upload'] = 'Convert on upload';
-$_lang['setting_imageoptimizer_convert_on_upload_desc'] = 'Enqueue or sync-convert when files are uploaded via File Manager.';
+$_lang['setting_imageoptimizer_convert_on_upload_desc'] = 'Auto-enqueue on File Manager upload. Does not affect Rebuild queue and does not disable responsive widths.';
 
-$_lang['setting_imageoptimizer_breakpoints'] = 'Breakpoints';
-$_lang['setting_imageoptimizer_breakpoints_desc'] = 'Responsive widths (CSV). Empty = original size only. Default: 480,768,1024,1440,1920.';
+$_lang['setting_imageoptimizer_breakpoints'] = 'Responsive widths (breakpoints)';
+$_lang['setting_imageoptimizer_breakpoints_desc'] = 'Comma-separated: 480,768,1024… Each file gets one queue row per width plus full-size (0). If images are already resized in media — leave empty for WebP/AVIF of the original only.';
 
 $_lang['setting_imageoptimizer_variant_pattern'] = 'Variant filename pattern';
 $_lang['setting_imageoptimizer_variant_pattern_desc'] = 'Placeholders: {basename}, {width}, {ext}. Width 0 → image.jpg.webp.';

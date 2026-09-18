@@ -44,10 +44,10 @@ $_lang['setting_imageoptimizer_skip_classes'] = 'CSS-классы для про�
 $_lang['setting_imageoptimizer_skip_classes_desc'] = 'Классы <img> через запятую.';
 
 $_lang['setting_imageoptimizer_convert_on_upload'] = 'Конвертация при загрузке';
-$_lang['setting_imageoptimizer_convert_on_upload_desc'] = 'Добавлять в очередь или синхронно конвертировать при загрузке в File Manager.';
+$_lang['setting_imageoptimizer_convert_on_upload_desc'] = 'Автоматически ставить файл в очередь при загрузке в File Manager. Не влияет на «Пересобрать очередь» и не отключает responsive-ширины.';
 
-$_lang['setting_imageoptimizer_breakpoints'] = 'Брейкпоинты';
-$_lang['setting_imageoptimizer_breakpoints_desc'] = 'Ширины responsive (CSV). Пусто = только оригинал. По умолчанию: 480,768,1024,1440,1920.';
+$_lang['setting_imageoptimizer_breakpoints'] = 'Responsive-ширины (breakpoints)';
+$_lang['setting_imageoptimizer_breakpoints_desc'] = 'Через запятую: 480,768,1024… Для каждого файла — задача на каждую ширину + full-size (0). Если размеры уже готовы в медиа — оставьте пустым: только WebP/AVIF исходника без ресайза.';
 
 $_lang['setting_imageoptimizer_variant_pattern'] = 'Шаблон имени варианта';
 $_lang['setting_imageoptimizer_variant_pattern_desc'] = 'Плейсхолдеры: {basename}, {width}, {ext}. Ширина 0 → image.jpg.webp.';

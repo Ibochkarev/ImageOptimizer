@@ -18,7 +18,8 @@ export function useQueuePolling(callback, intervalMs = DEFAULT_INTERVAL_MS) {
     stop()
     enabled.value = true
     timer = setInterval(() => {
-      callback()
+      // Prefer quiet polls so callers can skip readiness flicker / skeletons.
+      callback({ quiet: true })
     }, intervalMs)
   }
 

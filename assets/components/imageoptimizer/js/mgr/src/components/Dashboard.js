@@ -34,9 +34,14 @@ export default defineComponent({
         skipped.value +
         processing.value,
     );
-    const progress = computed(() =>
-      total.value > 0 ? Math.round((done.value / total.value) * 100) : 0,
-    );
+    const progress = computed(() => {
+      if (total.value <= 0) {
+        return 0;
+      }
+      // Count finished work (done + failed + skipped), not only successful done.
+      const finished = done.value + failed.value + skipped.value;
+      return Math.min(100, Math.round((finished / total.value) * 100));
+    });
     const processButtonLabel = computed(() => {
       if (queueProcessor.running.value) {
         return lexFormat(
@@ -46,16 +51,42 @@ export default defineComponent({
       }
       return lex("imageoptimizer.queue.process");
     });
+    const batchProgressText = computed(() => {
+      if (!queueProcessor.running.value) {
+        return "";
+      }
+      return lexFormat(
+        "imageoptimizer.queue.batch_progress",
+        queueProcessor.totalProcessed.value,
+        pending.value,
+        failed.value,
+      );
+    });
 
-    async function loadSummary() {
-      loading.value = true;
+    async function loadSummary({ quiet = false } = {}) {
+      if (!quiet) {
+        loading.value = true;
+      }
       try {
         const res = await api.statsSummary();
-        summary.value = res.data || { queue: {}, readiness: 0 };
+        const data = res.data || { queue: {}, readiness: 0 };
+        if (quiet) {
+          // Live / in-process polls: refresh queue counts only. Readiness is static.
+          summary.value = {
+            ...summary.value,
+            queue: data.queue || summary.value.queue,
+          };
+        } else {
+          summary.value = data;
+        }
       } catch (e) {
-        notifyError(e.message);
+        if (!quiet) {
+          notifyError(e.message);
+        }
       } finally {
-        loading.value = false;
+        if (!quiet) {
+          loading.value = false;
+        }
       }
     }
 
@@ -144,6 +175,7 @@ export default defineComponent({
 
     return {
       lex,
+      lexFormat,
       loading,
       pending,
       done,
@@ -151,6 +183,7 @@ export default defineComponent({
       skipped,
       processing,
       progress,
+      batchProgressText,
       summary,
       canRun,
       resetStuck,
@@ -179,30 +212,33 @@ export default defineComponent({
       <div class="grid">
         <div class="col-12 md:col-3">
           <StatCard :label="lex('imageoptimizer.status.pending')" :value="pending"
-            icon="pi pi-clock" :loading="loading || queueProcessor.running.value" />
+            icon="pi pi-clock" :loading="loading && !queueProcessor.running.value" />
         </div>
         <div class="col-12 md:col-3">
           <StatCard :label="lex('imageoptimizer.status.done')" :value="done"
-            icon="pi pi-check" :loading="loading || queueProcessor.running.value" />
+            icon="pi pi-check" :loading="loading && !queueProcessor.running.value" />
         </div>
         <div class="col-12 md:col-3">
           <StatCard :label="lex('imageoptimizer.status.failed')" :value="failed"
-            icon="pi pi-times" :loading="loading || queueProcessor.running.value" />
+            icon="pi pi-times" :loading="loading && !queueProcessor.running.value" />
         </div>
         <div class="col-12 md:col-3">
           <StatCard :label="lex('imageoptimizer.status.skipped')" :value="skipped"
-            icon="pi pi-forward" :loading="loading || queueProcessor.running.value" />
+            icon="pi pi-forward" :loading="loading && !queueProcessor.running.value" />
         </div>
       </div>
       <div class="grid mt-1">
         <div class="col-12 md:col-8">
-          <StatCard :label="lex('imageoptimizer.dashboard.progress')" :value="progress + '%'" icon="pi pi-chart-line" :loading="loading">
+          <StatCard :label="lex('imageoptimizer.dashboard.progress')" :value="progress + '%'" icon="pi pi-chart-line" :loading="loading && !queueProcessor.running.value">
             <ProgressBar :value="progress" class="mt-2" />
+            <div v-if="queueProcessor.running.value" class="text-sm text-color-secondary mt-2">
+              {{ batchProgressText }}
+            </div>
           </StatCard>
         </div>
         <div class="col-12 md:col-4">
           <StatCard :label="lex('imageoptimizer.dashboard.readiness')" :value="summary.readiness + '%'"
-            icon="pi pi-server" :loading="loading" />
+            icon="pi pi-server" :loading="loading && !queueProcessor.running.value" />
         </div>
       </div>
       <div v-if="canRun" class="flex flex-wrap gap-2 mt-2">

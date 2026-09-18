@@ -21,3 +21,4 @@ require_once $coreInclude . 'img_skip_rules.php';
 require_once $coreInclude . 'picture_builder.php';
 require_once $coreInclude . 'html_cache.php';
 require_once $coreInclude . 'inject.php';
+require_once $coreInclude . 'handlers_settings.php';

@@ -164,11 +164,16 @@ export default defineComponent({
                 <div class="col-12 flex align-items-center gap-3">
                   <ToggleSwitch :modelValue="bool('convert_on_upload')" :disabled="!canEdit"
                     @update:modelValue="setBool('convert_on_upload', $event)" />
-                  <span>{{ lex('setting_imageoptimizer_convert_on_upload') }}</span>
+                  <div>
+                    <div>{{ lex('setting_imageoptimizer_convert_on_upload') }}</div>
+                    <div class="text-sm text-color-secondary">{{ lex('setting_imageoptimizer_convert_on_upload_desc') }}</div>
+                  </div>
                 </div>
                 <div class="col-12 md:col-6 field">
                   <label class="block font-medium mb-1">{{ lex('setting_imageoptimizer_breakpoints') }}</label>
-                  <InputText v-model="settings.breakpoints" class="w-full" :disabled="!canEdit" />
+                  <InputText v-model="settings.breakpoints" class="w-full" :disabled="!canEdit"
+                    :placeholder="lex('setting_imageoptimizer_breakpoints_desc')" />
+                  <small class="text-color-secondary">{{ lex('setting_imageoptimizer_breakpoints_desc') }}</small>
                 </div>
                 <div class="col-12 md:col-6 field">
                   <label class="block font-medium mb-1">{{ lex('setting_imageoptimizer_variant_pattern') }}</label>

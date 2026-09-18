@@ -17,6 +17,7 @@ class modX
     public mixed $user = null;
     public mixed $resource = null;
     public modLexicon $lexicon;
+    public modCacheManager $cacheManager;
 
     public function __construct()
     {
@@ -26,6 +27,25 @@ class modX
     public function getOption(string $key, $options = null, $default = null, bool $skipEvents = false): mixed
     {
         return $default;
+    }
+
+    public function getPlaceholder(string $key): mixed
+    {
+        return null;
+    }
+
+    public function setPlaceholder(string $key, mixed $value): void
+    {
+    }
+
+    public function getPlaceholders(): array
+    {
+        return [];
+    }
+
+    public function lexicon(string $key, array $params = [], array $options = []): string
+    {
+        return '';
     }
 
     public function setOption(string $key, mixed $value, array $options = []): void
@@ -158,6 +178,10 @@ class modRequest
 class modCacheManager
 {
     public function clear(array $targets = []): void
+    {
+    }
+
+    public function refresh(array $targets = []): void
     {
     }
 }

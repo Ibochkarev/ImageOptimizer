@@ -35,6 +35,7 @@ $_lang['imageoptimizer.queue.process'] = 'Обработать очередь';
 $_lang['imageoptimizer.queue.process_done'] = 'Обработано %s задач, в очереди осталось %s';
 $_lang['imageoptimizer.queue.process_time_budget'] = 'Достигнут лимит времени PHP. Нажмите «Обработать» ещё раз или настройте cron.';
 $_lang['imageoptimizer.queue.processing'] = 'Обработка… осталось %s';
+$_lang['imageoptimizer.queue.batch_progress'] = 'В этом запуске: %s · в очереди: %s · ошибки: %s';
 $_lang['imageoptimizer.queue.stop'] = 'Остановить';
 $_lang['imageoptimizer.queue.all_done'] = 'Обработано %s задач. Очередь пуста.';
 $_lang['imageoptimizer.queue.stopped'] = 'Остановлено. Обработано %s, в очереди %s.';
