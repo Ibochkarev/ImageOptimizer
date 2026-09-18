@@ -99,9 +99,9 @@ class ImageOptimizerPackage
                 'php' => '>=8.2.0',
                 'modx' => '>=3.0.0',
                 'pdoTools' => '>=2.1.0',
-                // xPDOTransport::satisfies сравнивает semver без release; >=1.1.2-pl ложно
-                // отклоняет установленный vuetools-1.1.2-pl. Минимальный релиз — 1.1.2-pl.
-                'vuetools' => '>=1.1.2',
+                // satisfies() compares semver without release suffix.
+                // Use >=1.2.0 so vuetools-1.2.0-pl matches (getActiveTheme).
+                'vuetools' => '>=1.2.0',
             ],
         ]);
         $this->modx->log(modX::LOG_LEVEL_INFO, 'Added package attributes.');

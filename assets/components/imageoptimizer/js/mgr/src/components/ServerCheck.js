@@ -62,7 +62,10 @@ export default defineComponent({
     <div class="imageoptimizer-tab-panel">
       <div class="flex align-items-center justify-content-between mb-3">
         <div class="font-semibold text-lg">{{ lex('imageoptimizer.server.title') }}</div>
-        <Button icon="pi pi-refresh" :loading="loading" text rounded @click="load" />
+        <Button icon="pi pi-refresh" :loading="loading" text rounded
+          :aria-label="lex('imageoptimizer.server.refresh')"
+          :title="lex('imageoptimizer.server.refresh')"
+          @click="load" />
       </div>
       <ProgressBar :value="data.readiness || 0" class="mb-4" />
       <div class="grid">
@@ -88,7 +91,10 @@ export default defineComponent({
         <template #content>
           <div class="flex gap-2 align-items-center">
             <InputText v-model="cronCmd" class="flex-1" readonly />
-            <Button icon="pi pi-copy" @click="copyCron" />
+            <Button icon="pi pi-copy"
+              :aria-label="lex('imageoptimizer.server.cron_copy')"
+              :title="lex('imageoptimizer.server.cron_copy')"
+              @click="copyCron" />
           </div>
         </template>
       </Card>

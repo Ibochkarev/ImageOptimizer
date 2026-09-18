@@ -7,7 +7,8 @@ if (typeof window !== 'undefined') {
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { getPrimeVueLocale } from '@vuetools/usePrimeVueLocale'
-import { PrimeVue, Aura, ToastService, ConfirmationService } from 'primevue'
+import { getActiveTheme } from "@vuetools/useTheme";
+import { PrimeVue, ToastService, ConfirmationService } from "primevue";
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 import App from './App.js'
@@ -34,14 +35,19 @@ if (typeof document !== 'undefined') {
 function createVueApp() {
   const app = createApp(App)
   app.use(createPinia())
+  const themeConfig = getActiveTheme();
   app.use(PrimeVue, {
+    ...themeConfig,
     theme: {
-      preset: Aura,
-      options: { darkModeSelector: '.modx-dark-mode' },
+      ...themeConfig.theme,
+      options: {
+        ...(themeConfig.theme?.options || {}),
+        darkModeSelector: ".modx-dark-mode",
+      },
     },
     locale: getPrimeVueLocale(resolveManagerCultureKey()),
     ripple: true,
-  })
+  });
   app.use(ToastService)
   app.use(ConfirmationService)
   return app

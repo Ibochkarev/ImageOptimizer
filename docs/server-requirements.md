@@ -10,7 +10,7 @@
 | PHP | ≥ 8.2.0 (enum, typed properties) |
 | MySQL / MariaDB | InnoDB для таблицы `imageoptimizer_queue` |
 | pdoTools | Зависимость transport |
-| VueTools | ≥ 1.1.2-pl для админки |
+| VueTools | ≥ 1.2.0-pl для админки (`getActiveTheme`, `vuetools.theme`) |
 
 ## PHP extensions
 

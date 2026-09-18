@@ -8,7 +8,7 @@ ImageOptimizer рассчитан на типичный стек MODX 3: Filesys
 |-------------------|---------------|--------------|
 | **MODX 3** | Полная | MODX 2.x не поддерживается |
 | **pdoTools** | Зависимость install | Установить до или вместе с ImageOptimizer |
-| **VueTools 1.1.2+** | Обязателен для админки | Без него — сообщение `vuetools_required` |
+| **VueTools 1.2.0+** | Обязателен для админки | Тема Aura/Modx через `vuetools.theme` (`getActiveTheme`). Без пакета — `vuetools_required` |
 | **MiniShop3** | Инъекция на витрине | Чанки товаров не обязаны содержать `<picture>` |
 | **Thumb3x** | Skip по URL | `skip_src_pattern=thumb3x` (default) |
 | **pThumb / phpThumbOf** | Параллельно | Не конфликтует. Разные URL и файлы на диске |
@@ -41,7 +41,14 @@ Thumb3x генерирует on-the-fly URL с сегментом `thumb3x`. Ima
 
 ## VueTools и PrimeVue
 
-Админка собрана Vite + Vue 3 + PrimeVue 4. VueTools подключает Pinia и общий shell менеджера.
+Админка собрана Vite + Vue 3 + PrimeVue 4. VueTools подключает Pinia, import map и тему через `getActiveTheme()` (`@vuetools/useTheme`).
+
+Системная настройка **`vuetools.theme`**:
+
+- `aura` — стандартная тема PrimeVue (по умолчанию)
+- `modx` — тема под менеджер MODX 3
+
+После смены темы пересборка ImageOptimizer не нужна. Требуется VueTools ≥ 1.2.0-pl.
 
 После обновления VueTools:
 
